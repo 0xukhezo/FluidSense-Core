@@ -1,7 +1,4 @@
-import { loadFixture, mine, mineUpTo } from '@nomicfoundation/hardhat-network-helpers'
 import { ethers } from 'hardhat'
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
-import { expect } from 'chai'
 import { IERC20, CampaignFactory__factory, CampaignFactory } from "../typechain-types"
 
 
@@ -55,9 +52,6 @@ describe('Superfrens', function () {
 
             const xUsdc: IERC20 = await ethers.getContractAt("IERC20", _tokenX)
             const balanceCampaign = await xUsdc.connect(deployer).balanceOf(newCampaign)
-            console.log(balanceCampaign)
-
-            const balance = await usdc.balanceOf(deployer.address);
 
         })
 
