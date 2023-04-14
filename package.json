@@ -12,12 +12,10 @@
     "@superfluid-finance/ethereum-contracts": "^1.5.1",
     "@superfluid-finance/sdk-core": "^0.6.3",
     "dotenv": "^16.0.3",
-    "flat": "^5.0.2",
     "graphql": "^16.6.0",
     "hardhat": "^2.13.0",
     "hardhat-deploy": "^0.11.25",
     "jest": "^29.5.0",
-    "minimatch": "^9.0.0",
     "node-fetch": "^3.3.1"
   },
   "devDependencies": {
