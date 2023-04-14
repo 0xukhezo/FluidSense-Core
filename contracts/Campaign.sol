@@ -1,6 +1,7 @@
 //SPDX-License-Identifier: Unlicensed
 pragma solidity 0.8.14;
 
+import "hardhat/console.sol";
 import {SuperTokenV1Library} from "@superfluid-finance/ethereum-contracts/contracts/apps/SuperTokenV1Library.sol";
 import {ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
@@ -20,10 +21,10 @@ contract Campaign {
     }
 
     function _upgrade(address _operator) internal {
-        tokenX.upgrade(baseToken.balanceOf(address(this)));
-        tokenX.transfer(
+        baseToken.transfer(
             _operator,
             (baseToken.balanceOf(address(this)) * 300) / 10000
         );
+        tokenX.upgrade(baseToken.balanceOf(address(this)));
     }
 }
