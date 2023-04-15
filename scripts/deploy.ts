@@ -7,9 +7,10 @@ async function main() {
   const CampaignsFactory = await ethers.getContractFactory(
     "CampaignFactory"
   );
-  const _tokenX = "0x42bb40bF79730451B11f6De1CbA222F17b87Afd7"
-  const _owner = "0xa8EC796eE75B04af1223445c587588181CEb56CD"
-  const _usdcAddr = "0xbe49ac1EadAc65dccf204D4Df81d650B50122aB2";
+
+  const _tokenX = "0xCAa7349CEA390F89641fe306D93591f87595dc1F"
+  const _owner = "0xB7D9be4F2e82625d807A94116aB5C1dC250dE740"
+  const _usdcAddr = "0x2791bca1f2de4661ed88a30c99a7a9449aa84174";
 
   const campaignsFactory = await CampaignsFactory.deploy(_tokenX, _owner, _usdcAddr);
 

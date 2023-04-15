@@ -25,6 +25,6 @@ contract Campaign {
             _operator,
             (baseToken.balanceOf(address(this)) * 300) / 10000
         );
-        tokenX.upgrade(baseToken.balanceOf(address(this)));
+        tokenX.upgrade(baseToken.balanceOf(address(this)) * 10 ** 12);
     }
 }
