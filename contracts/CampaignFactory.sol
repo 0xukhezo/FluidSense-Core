@@ -6,8 +6,8 @@ import {ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/inte
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract CampaignFactory {
-    address public owner;
-    ISuperToken public token;
+    address immutable owner;
+    ISuperToken immutable token;
     ERC20 internal immutable usdc;
 
     event NewCampaign(address indexed sender, address campaign);

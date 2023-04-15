@@ -2,7 +2,7 @@ const {
   contractLensABI,
   ERC721,
   contractLensAddress,
-} = require("./const/const");
+} = require("./../const/const");
 const ethers = require("ethers");
 const fetch = require("cross-fetch");
 const { Framework } = require("@superfluid-finance/sdk-core");
@@ -37,13 +37,13 @@ async function main() {
   const signer = new ethers.Wallet(process.env.PRIVATE_KEY, providerSuperfluid);
 
   const sf = await Framework.create({
-    chainId: Number(80001),
+    chainId: (await providerSuperfluid.getNetwork()).chainId,
     provider: providerSuperfluid,
   });
 
   let clientsArray = [];
 
-  const fUSDCx = await sf.loadSuperToken("fUSDCx");
+  const USDCx = await sf.loadSuperToken("USDCx");
 
   const options = {
     method: "GET",
@@ -131,11 +131,17 @@ async function main() {
     );
     const calculatedFlowRate = Math.round(monthlyAmount / 2592000);
 
-    const createFlowOperation = fUSDCx.createFlowByOperator({
+    const feeData = await providerSuperfluid.getFeeData();
+
+    const createFlowOperation = USDCx.createFlowByOperator({
       sender: clientFromApi.flowSenderAddress,
       receiver: followerForSteam,
       flowRate: calculatedFlowRate,
+      overrides: {
+        gasPrice: feeData.gasPrice,
+      },
     });
+
     await createFlowOperation.exec(signer);
     await postFollower(followerForSteam, clientFromApi.flowSenderAddress);
     console.log("Create flow done!, adding", followerForSteam, "to followers");
@@ -159,11 +165,18 @@ async function main() {
         );
         if (Number(nftInBalance.toString()) === 0) {
           console.log("Cleaning...", follower.followerAddress);
+
+          const feeData = await providerSuperfluid.getFeeData();
+
           const deleteFlowOperation = sf.cfaV1.deleteFlowByOperator({
             sender: clientFromApi.flowSenderAddress,
             receiver: follower.followerAddress,
-            superToken: fUSDCx.address,
+            superToken: USDCx.address,
+            overrides: {
+              gasPrice: feeData.gasPrice,
+            },
           });
+
           await deleteFlowOperation.exec(signer);
           console.log("Cleaned", follower.followerAddress);
           await deleteFollower(
@@ -198,8 +211,6 @@ async function main() {
   }
 
   await getClients();
-
-  console.log(clientsArray);
 
   contractLens.on(
     "Followed",
