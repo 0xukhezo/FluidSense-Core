@@ -1802,4 +1802,4 @@ const ERC721 = [
 
 const contractLensAddress = "0xDb46d1Dc155634FbC732f92E853b10B288AD5a1d";
 
-module.exports = { contractLensABI, ERC721, contractLensAddress };
+export { contractLensABI, ERC721, contractLensAddress };

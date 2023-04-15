@@ -1,13 +1,22 @@
-const {
+import {
   contractLensABI,
   ERC721,
   contractLensAddress,
-} = require("./const/const");
-const ethers = require("ethers");
-const fetch = require("cross-fetch");
-const { Framework } = require("@superfluid-finance/sdk-core");
+} from "./const/const.js";
+import ethers from "ethers";
+import fetch from "cross-fetch";
+import { Framework } from "@superfluid-finance/sdk-core";
+import { ApolloClient, InMemoryCache, gql } from "@apollo/client/core/index.js";
 
-require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
+
+const API_URL = "https://api.lens.dev";
+
+export const client = new ApolloClient({
+  uri: API_URL,
+  cache: new InMemoryCache(),
+});
 
 let ALCHEMY_KEY;
 let RPC_ENDPOINT;
@@ -55,6 +64,7 @@ async function main() {
   async function getClients() {
     const response = await fetch(`${API_ENDPOINT}/clients`, options);
     clientsArray = await response.json();
+    console.log("Clients: ", clientsArray);
   }
 
   async function getFollowers(flowSenderAddress) {
@@ -116,6 +126,117 @@ async function main() {
       const result = iface.decodeFunctionData("followFor", tx.data);
       followerForSteam = result.mintFor[0];
     }
+
+    if (client.isHuman) {
+      const profileQuery = `query DefaultProfile {
+        defaultProfile(request: { ethereumAddress: "${newFollower}"}) {
+          id
+          name
+          bio
+          isDefault
+          attributes {
+            displayType
+            traitType
+            key
+            value
+          }
+          onChainIdentity{
+            ens{
+              name
+              __typename
+            }
+            proofOfHumanity
+            __typename
+            worldcoin{
+              isHuman
+              __typename
+            }
+            sybilDotOrg{
+              source{
+                __typename
+              }
+              __typename
+              verified
+            }
+          }
+          followNftAddress
+          metadata
+          handle
+          picture {
+            ... on NftImage {
+              contractAddress
+              tokenId
+              uri
+              chainId
+              verified
+            }
+            ... on MediaSet {
+              original {
+                url
+                mimeType
+              }
+            }
+          }
+          coverPicture {
+            ... on NftImage {
+              contractAddress
+              tokenId
+              uri
+              chainId
+              verified
+            }
+            ... on MediaSet {
+              original {
+                url
+                mimeType
+              }
+            }
+          }
+          ownedBy
+          dispatcher {
+            address
+            canUseRelay
+          }
+          stats {
+            totalFollowers
+            totalFollowing
+            totalPosts
+            totalComments
+            totalMirrors
+            totalPublications
+            totalCollects
+          }
+          followModule {
+            ... on FeeFollowModuleSettings {
+              type
+              contractAddress
+              amount {
+                asset {
+                  name
+                  symbol
+                  decimals
+                  address
+                }
+                value
+              }
+              recipient
+            }
+            ... on ProfileFollowModuleSettings {
+             type
+            }
+            ... on RevertFollowModuleSettings {
+             type
+            }
+          }
+        }
+      }`;
+      let response = await client.query({ query: gql(profileQuery) });
+      const isHuman = response?.data?.defaultProfile?.onChainIdentity?.proofOfHumanity;
+      if (!isHuman) {
+        return;
+      }
+    }
+
     const alreadyWithFlow = await followersFromApi.filter(
       (follower) => follower.followerAddress === followerForSteam
     );
