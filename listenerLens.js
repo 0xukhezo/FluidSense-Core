@@ -18,12 +18,29 @@ export const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+let ALCHEMY_KEY;
+let RPC_ENDPOINT;
+let API_ENDPOINT;
+let WSS_ENDPOINT;
+
+if (process.env.ENV === "prod") {
+  ALCHEMY_KEY = process.env.ALCHEMY_KEY_POLYGON;
+  RPC_ENDPOINT = process.env.RPC_ENDPOINT_POLYGON;
+  API_ENDPOINT = process.env.API_ENDPOINT;
+  WSS_ENDPOINT = process.env.WSS_RPC_ENDPOINT_POLYGON;
+} else {
+  ALCHEMY_KEY = process.env.ALCHEMY_KEY_MUMBAI;
+  RPC_ENDPOINT = process.env.RPC_ENDPOINT_MUMBAI;
+  API_ENDPOINT = process.env.API_ENDPOINT;
+  WSS_ENDPOINT = process.env.WSS_RPC_ENDPOINT_MUMBAI;
+}
+
 async function main() {
   const providerLens = new ethers.providers.WebSocketProvider(
-    `wss://polygon-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_KEY_POLYGON}`
+    `${process.env.WSS_RPC_ENDPOINT_POLYGON}${process.env.ALCHEMY_KEY_POLYGON}`
   );
   const providerSuperfluid = ethers.getDefaultProvider(
-    `https://polygon-mumbai.g.alchemy.com/v2/${process.env.ALCHEMY_KEY_MUMBAI}`
+    `${RPC_ENDPOINT}${ALCHEMY_KEY}`
   );
 
   const signer = new ethers.Wallet(process.env.PRIVATE_KEY, providerSuperfluid);
@@ -45,17 +62,14 @@ async function main() {
   };
 
   async function getClients() {
-    const response = await fetch(
-      "https://qfgg4yahcg.execute-api.eu-north-1.amazonaws.com/fluidSense/clients",
-      options
-    );
+    const response = await fetch(`${API_ENDPOINT}/clients`, options);
     clientsArray = await response.json();
     console.log("Clients: ", clientsArray);
   }
 
   async function getFollowers(flowSenderAddress) {
     const response = await fetch(
-      `https://qfgg4yahcg.execute-api.eu-north-1.amazonaws.com/fluidSense/followers?flowSenderAddress=${flowSenderAddress}`,
+      `${API_ENDPOINT}/followers?flowSenderAddress=${flowSenderAddress}`,
       options
     );
     return response.json();
@@ -63,7 +77,7 @@ async function main() {
 
   async function deleteFollower(flowSenderAddress, followerAddress) {
     const response = await fetch(
-      `https://qfgg4yahcg.execute-api.eu-north-1.amazonaws.com/fluidSense/followers?flowSenderAddress=${flowSenderAddress}&followerAddress=${followerAddress}`,
+      `${API_ENDPOINT}/followers?flowSenderAddress=${flowSenderAddress}&followerAddress=${followerAddress}`,
       {
         method: "DELETE",
         headers: {
@@ -75,20 +89,17 @@ async function main() {
 
   async function postFollower(followerAddress, flowSenderAddress) {
     try {
-      await fetch(
-        "https://qfgg4yahcg.execute-api.eu-north-1.amazonaws.com/fluidSense/followers",
-        {
-          method: "POST",
-          headers: {
-            accept: "application/json",
-          },
-          body: JSON.stringify({
-            followerAddress: followerAddress,
-            flowSenderAddress: flowSenderAddress,
-          }),
-          mode: "no-cors",
-        }
-      );
+      await fetch(`${API_ENDPOINT}/followers`, {
+        method: "POST",
+        headers: {
+          accept: "application/json",
+        },
+        body: JSON.stringify({
+          followerAddress: followerAddress,
+          flowSenderAddress: flowSenderAddress,
+        }),
+        mode: "no-cors",
+      });
     } catch (err) {
       console.log(err);
     }
@@ -308,6 +319,8 @@ async function main() {
   }
 
   await getClients();
+
+  console.log(clientsArray);
 
   contractLens.on(
     "Followed",
