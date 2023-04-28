@@ -1,7 +1,9 @@
+#!/usr/bin/env node
 const { ERC721 } = require("./const/const");
 const ethers = require("ethers");
 const fetch = require("cross-fetch");
 const { Framework } = require("@superfluid-finance/sdk-core");
+const fs = require("fs");
 
 require("dotenv").config();
 
@@ -20,6 +22,12 @@ if (process.env.ENV === "prod") {
   RPC_ENDPOINT = process.env.RPC_ENDPOINT_MUMBAI;
   API_ENDPOINT = process.env.API_ENDPOINT;
   WSS_ENDPOINT = process.env.WSS_RPC_ENDPOINT_MUMBAI;
+}
+
+function writeToLog(message) {
+  const date = new Date().toISOString();
+  const logMessage = `[${date}] ${message}\n`;
+  fs.appendFileSync("logs.txt", logMessage);
 }
 
 async function main() {
@@ -75,7 +83,6 @@ async function main() {
 
   async function cleanSteams(clientFromApi) {
     try {
-      console.log("Start cleaning of", clientFromApi.flowSenderAddress);
       const followersFromApi = await getFollowers(
         clientFromApi.flowSenderAddress
       );
@@ -84,45 +91,57 @@ async function main() {
         ERC721,
         providerLens
       );
-      followersFromApi.map(async (follower) => {
-        const nftInBalance = await contractLensNFT.balanceOf(
-          follower.followerAddress
-        );
-        if (Number(nftInBalance.toString()) === 0) {
-          console.log("Cleaning...", follower.followerAddress);
+      const feeData = await providerSuperfluid.getFeeData();
 
-          const feeData = await providerSuperfluid.getFeeData();
-
-          const deleteFlowOperation = sf.cfaV1.deleteFlowByOperator({
-            sender: clientFromApi.flowSenderAddress,
-            receiver: follower.followerAddress,
-            superToken: USDCx.address,
-            overrides: {
-              gasPrice: feeData.gasPrice,
-            },
-          });
-
-          await deleteFlowOperation
-            .exec(signer)
-            .then(() => console.log("Cleaned", follower.followerAddress));
-          await deleteFollower(
-            clientFromApi.flowSenderAddress,
+      for (let i = 0; i < followersFromApi.length; i++) {
+        const follower = followersFromApi[i];
+        try {
+          const nftInBalance = await contractLensNFT.balanceOf(
             follower.followerAddress
-          ).then(() =>
-            console.log(
-              "Delete flow done!, deleting",
-              follower.followerAddress,
-              "from followers"
-            )
           );
+
+          if (Number(nftInBalance.toString()) === 0) {
+            writeToLog(
+              `Cleaning... ${follower.followerAddress} from ${clientFromApi.flowSenderAddress}`
+            );
+
+            const deleteFlowOperation = sf.cfaV1.deleteFlowByOperator({
+              sender: clientFromApi.flowSenderAddress,
+              receiver: follower.followerAddress,
+              superToken: USDCx.address,
+              overrides: {
+                gasPrice: feeData.gasPrice,
+              },
+            });
+
+            await deleteFlowOperation
+              .exec(signer)
+              .then(() =>
+                writeToLog(
+                  `Cleaned ${follower.followerAddress} from ${clientFromApi.flowSenderAddress}`
+                )
+              );
+
+            await deleteFollower(
+              clientFromApi.flowSenderAddress,
+              follower.followerAddress
+            ).then(() =>
+              writeToLog(
+                `Deleted ${follower.followerAddress} from followers of ${clientFromApi.flowSenderAddress}`
+              )
+            );
+          }
+        } catch (error) {
+          writeToLog(`An error happened: ${error}`);
         }
-      });
-    } catch (err) {
-      console.log(err);
+      }
+    } catch (error) {
+      writeToLog(`An error happened: ${error}`);
     }
   }
 
   await getClients();
+
   clientsArray.map(async (client) => {
     await cleanSteams(client);
   });

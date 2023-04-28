@@ -1,10 +1,7 @@
-const {
-  contractLensABI,
-  ERC721,
-  contractLensAddress,
-} = require("./../const/const");
+const { contractLensABI, contractLensAddress } = require("./const/const");
 const ethers = require("ethers");
 const fetch = require("cross-fetch");
+const fs = require("fs");
 const { Framework } = require("@superfluid-finance/sdk-core");
 
 require("dotenv").config();
@@ -24,6 +21,12 @@ if (process.env.ENV === "prod") {
   RPC_ENDPOINT = process.env.RPC_ENDPOINT_MUMBAI;
   API_ENDPOINT = process.env.API_ENDPOINT;
   WSS_ENDPOINT = process.env.WSS_RPC_ENDPOINT_MUMBAI;
+}
+
+function writeToLog(message) {
+  const date = new Date().toISOString();
+  const logMessage = `[${date}] ${message}\n`;
+  fs.appendFileSync("logs.txt", logMessage);
 }
 
 async function main() {
@@ -65,18 +68,6 @@ async function main() {
     return response.json();
   }
 
-  async function deleteFollower(flowSenderAddress, followerAddress) {
-    const response = await fetch(
-      `${API_ENDPOINT}/followers?flowSenderAddress=${flowSenderAddress}&followerAddress=${followerAddress}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-  }
-
   async function postFollower(followerAddress, flowSenderAddress) {
     try {
       await fetch(`${API_ENDPOINT}/followers`, {
@@ -91,7 +82,7 @@ async function main() {
         mode: "no-cors",
       });
     } catch (err) {
-      console.log(err);
+      writeToLog(err);
     }
   }
 
@@ -121,10 +112,14 @@ async function main() {
     );
 
     if (alreadyWithFlow.length !== 0) {
-      console.log("Already with flow");
+      writeToLog(
+        `${followerForSteam} already with flow in ${clientFromApi.flowSenderAddress}`
+      );
       return;
     }
-    console.log("Creating steam to ", followerForSteam);
+    writeToLog(
+      `Creating steam to  ${followerForSteam} in ${clientFromApi.flowSenderAddress}`
+    );
 
     const monthlyAmount = ethers.utils.parseEther(
       clientFromApi.amountFlowRate.toString()
@@ -139,61 +134,15 @@ async function main() {
       flowRate: calculatedFlowRate,
       overrides: {
         gasPrice: feeData.gasPrice,
+        gasLimit: 9000000,
       },
     });
 
     await createFlowOperation.exec(signer);
     await postFollower(followerForSteam, clientFromApi.flowSenderAddress);
-    console.log("Create flow done!, adding", followerForSteam, "to followers");
-  }
-
-  async function cleanSteams(
-    newFollower,
-    clientFromApi,
-    txHash,
-    followersFromApi
-  ) {
-    try {
-      const contractLensNFT = new ethers.Contract(
-        clientFromApi.followNftAddress,
-        ERC721,
-        providerLens
-      );
-      followersFromApi.map(async (follower) => {
-        const nftInBalance = await contractLensNFT.balanceOf(
-          follower.followerAddress
-        );
-        if (Number(nftInBalance.toString()) === 0) {
-          console.log("Cleaning...", follower.followerAddress);
-
-          const feeData = await providerSuperfluid.getFeeData();
-
-          const deleteFlowOperation = sf.cfaV1.deleteFlowByOperator({
-            sender: clientFromApi.flowSenderAddress,
-            receiver: follower.followerAddress,
-            superToken: USDCx.address,
-            overrides: {
-              gasPrice: feeData.gasPrice,
-            },
-          });
-
-          await deleteFlowOperation.exec(signer);
-          console.log("Cleaned", follower.followerAddress);
-          await deleteFollower(
-            clientFromApi.flowSenderAddress,
-            follower.followerAddress
-          );
-          console.log(
-            "Delete flow done!, deleting",
-            follower.followerAddress,
-            "from followers"
-          );
-        }
-        await createFlow(newFollower, clientFromApi, txHash, followersFromApi);
-      });
-    } catch (err) {
-      console.log(err);
-    }
+    writeToLog(
+      `Create flow done!, adding ${followerForSteam} to followers in ${clientFromApi.flowSenderAddress}`
+    );
   }
 
   async function steam(profileIds, newFollower, tx) {
@@ -202,15 +151,12 @@ async function main() {
       return _client.clientProfile === profileIds;
     });
     const followers = await getFollowers(client[0].flowSenderAddress);
-    if (followers.length > 0) {
-      console.log("Cleaning steams...");
-      await cleanSteams(newFollower, client[0], tx.transactionHash, followers);
-    } else {
-      await createFlow(newFollower, client[0], tx.transactionHash, followers);
-    }
+    await createFlow(newFollower, client[0], tx.transactionHash, followers);
   }
 
   await getClients();
+
+  writeToLog("Listener ON");
 
   contractLens.on(
     "Followed",

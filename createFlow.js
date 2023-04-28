@@ -146,35 +146,39 @@ async function main() {
     providerSuperfluid
   );
   const nftInBalance = await contractLensNFT.balanceOf(
-    "0x413afeea60152dfCf25637100B0Ab14470826Caa"
+    "0x57B7bf6f792a6181Ec5aFB88cE7bcE330a9d1b67"
   );
   console.log(Number(nftInBalance.toString()));
 
   // Create flow
 
-  // await createFlow(
-  //   "0xb3204E7bD17273790f5ffb0Bb1e591Ab0011dC55",
-  //   "0.5",
-  //   addrCryptoPlazaCampaign,
-  //   USDCx
-  // );
+  await createFlow(
+    "0x57B7bf6f792a6181Ec5aFB88cE7bcE330a9d1b67",
+    "0.5",
+    addrCryptoPlazaCampaign,
+    USDCx
+  );
 
   // Delete flow
 
-  //   const feeData = await providerSuperfluid.getFeeData();
+  // const feeData = await providerSuperfluid.getFeeData();
 
-  //   const deleteFlowOperation = sf.cfaV1.deleteFlowByOperator({
-  //     sender: flowSenderAddress,
-  //     receiver: follower,
-  //     superToken: USDCx.address,
-  //     overrides: {
-  //       gasPrice: feeData.gasPrice,
-  //     },
-  //   });
+  // const deleteFlowOperation = sf.cfaV1.deleteFlowByOperator({
+  //   sender: "0xc0c95420b00b46cad44eed898471d9b32ce818b4", // addressCampaing
+  //   receiver: "0xb3204E7bD17273790f5ffb0Bb1e591Ab0011dC55", // addressFollower
+  //   superToken: USDCx.address,
+  //   overrides: {
+  //     gasPrice: feeData.gasPrice,
+  //     gasLimit: 9000000,
+  //   },
+  // });
 
-  //   await deleteFlowOperation.exec(signer);
+  // await deleteFlowOperation.exec(signer);
 
-  //   await deleteFollower(flowSenderAddress, follower);
+  // await deleteFollower(
+  //   "0xc0c95420b00b46cad44eed898471d9b32ce818b4",
+  //   "0xb3204E7bD17273790f5ffb0Bb1e591Ab0011dC55"
+  // );
 }
 
 main();
