@@ -4,21 +4,14 @@ pragma solidity 0.8.14;
 import {SuperTokenV1Library} from "@superfluid-finance/ethereum-contracts/contracts/apps/SuperTokenV1Library.sol";
 import {ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Campaign {
+contract Campaign is Ownable {
     using SuperTokenV1Library for ISuperToken;
 
     ISuperToken internal immutable tokenX;
     ERC20 internal immutable baseToken;
     address payable owner;
-
-    modifier onlyOwner() {
-        require(
-            msg.sender == owner,
-            "Only the contract owner can call this function"
-        );
-        _;
-    }
 
     constructor(ISuperToken _tokenX, address _operator) {
         tokenX = _tokenX;
