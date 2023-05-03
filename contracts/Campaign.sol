@@ -11,11 +11,11 @@ contract Campaign is Ownable {
 
     ISuperToken internal immutable tokenX;
     ERC20 internal immutable baseToken;
-    address payable owner;
+    address payable operator;
 
     constructor(ISuperToken _tokenX, address _operator) {
         tokenX = _tokenX;
-        owner = payable(_operator);
+        operator = payable(_operator);
         tokenX.setMaxFlowPermissions(_operator);
         baseToken = ERC20(tokenX.getUnderlyingToken());
         baseToken.approve(address(tokenX), 2 ** 256 - 1);
@@ -32,6 +32,6 @@ contract Campaign is Ownable {
 
     function withdraw(uint256 value) public onlyOwner {
         uint256 fee = (value * 300) / 10000;
-        tokenX.transfer(owner, fee);
+        tokenX.transfer(operator, fee);
     }
 }
