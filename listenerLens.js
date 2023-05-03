@@ -1,10 +1,24 @@
 const { contractLensABI, contractLensAddress } = require("./const/const");
+const {
+  ApolloClient,
+  InMemoryCache,
+  gql,
+  HttpLink,
+} = require("@apollo/client/core");
 const ethers = require("ethers");
 const fetch = require("cross-fetch");
 const fs = require("fs");
 const { Framework } = require("@superfluid-finance/sdk-core");
-
 require("dotenv").config();
+
+const API_URL = "https://api.lens.dev";
+
+const client = new ApolloClient({
+  link: new HttpLink({ uri: API_URL, fetch }),
+  cache: new InMemoryCache(),
+});
+
+const Profiles = (queryBody) => gql(queryBody);
 
 let ALCHEMY_KEY;
 let RPC_ENDPOINT;
@@ -86,6 +100,25 @@ async function main() {
     }
   }
 
+  async function fetchMirror(profileId, publicationId) {
+    const queryBody = `query Publication {
+      publication(request: {
+        publicationId: "${publicationId}"
+      }) {
+       __typename 
+        ... on Post {
+          mirrors(by: "${profileId}")
+        }
+      }
+    }`;
+    try {
+      let response = await client.query({ query: Profiles(queryBody) });
+      return response.data.publication.mirrors.length;
+    } catch (err) {
+      console.log({ err });
+    }
+  }
+
   const contractLens = new ethers.Contract(
     contractLensAddress,
     contractLensABI,
@@ -96,7 +129,8 @@ async function main() {
     newFollower,
     clientFromApi,
     txHash,
-    followersFromApi
+    followersFromApi,
+    profileIds
   ) {
     let followerForSteam = newFollower;
     if (followerForSteam === "0x5a84eC20F88e94dC3EB96cE77695997f8446a22D") {
@@ -110,7 +144,17 @@ async function main() {
     const alreadyWithFlow = await followersFromApi.filter(
       (follower) => follower.followerAddress === followerForSteam
     );
-
+    const mirrorPost = await fetchMirror(
+      profileIds,
+      clientFromApi.publicationId
+    );
+    console.log(mirrorPost);
+    if (mirrorPost === 0) {
+      writeToLog(
+        `${followerForSteam} no mirror the post ${clientFromApi.publicationId}`
+      );
+      return;
+    }
     if (alreadyWithFlow.length !== 0) {
       writeToLog(
         `${followerForSteam} already with flow in ${clientFromApi.flowSenderAddress}`
@@ -120,29 +164,29 @@ async function main() {
     writeToLog(
       `Creating steam to  ${followerForSteam} in ${clientFromApi.flowSenderAddress}`
     );
+    console.log("Pium");
+    // const monthlyAmount = ethers.utils.parseEther(
+    //   clientFromApi.amountFlowRate.toString()
+    // );
+    // const calculatedFlowRate = Math.round(monthlyAmount / 2592000);
 
-    const monthlyAmount = ethers.utils.parseEther(
-      clientFromApi.amountFlowRate.toString()
-    );
-    const calculatedFlowRate = Math.round(monthlyAmount / 2592000);
+    // const feeData = await providerSuperfluid.getFeeData();
 
-    const feeData = await providerSuperfluid.getFeeData();
+    // const createFlowOperation = USDCx.createFlowByOperator({
+    //   sender: clientFromApi.flowSenderAddress,
+    //   receiver: followerForSteam,
+    //   flowRate: calculatedFlowRate,
+    //   overrides: {
+    //     gasPrice: feeData.gasPrice,
+    //     gasLimit: 9000000,
+    //   },
+    // });
 
-    const createFlowOperation = USDCx.createFlowByOperator({
-      sender: clientFromApi.flowSenderAddress,
-      receiver: followerForSteam,
-      flowRate: calculatedFlowRate,
-      overrides: {
-        gasPrice: feeData.gasPrice,
-        gasLimit: 9000000,
-      },
-    });
-
-    await createFlowOperation.exec(signer);
-    await postFollower(followerForSteam, clientFromApi.flowSenderAddress);
-    writeToLog(
-      `Create flow done!, adding ${followerForSteam} to followers in ${clientFromApi.flowSenderAddress}`
-    );
+    // await createFlowOperation.exec(signer);
+    // await postFollower(followerForSteam, clientFromApi.flowSenderAddress);
+    // writeToLog(
+    //   `Create flow done!, adding ${followerForSteam} to followers in ${clientFromApi.flowSenderAddress}`
+    // );
   }
 
   async function steam(profileIds, newFollower, tx) {
@@ -151,7 +195,13 @@ async function main() {
       return _client.clientProfile === profileIds;
     });
     const followers = await getFollowers(client[0].flowSenderAddress);
-    await createFlow(newFollower, client[0], tx.transactionHash, followers);
+    await createFlow(
+      newFollower,
+      client[0],
+      tx.transactionHash,
+      followers,
+      profileIds
+    );
   }
 
   await getClients();

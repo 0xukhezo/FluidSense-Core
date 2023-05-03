@@ -12,6 +12,14 @@ contract Campaign {
     ERC20 internal immutable baseToken;
     address payable owner;
 
+    modifier onlyOwner() {
+        require(
+            msg.sender == owner,
+            "Only the contract owner can call this function"
+        );
+        _;
+    }
+
     constructor(ISuperToken _tokenX, address _operator) {
         tokenX = _tokenX;
         owner = payable(_operator);
@@ -29,11 +37,7 @@ contract Campaign {
         tokenX.upgrade(baseToken.balanceOf(address(this)) * 10 ** 12);
     }
 
-    function withdraw(uint256 value) public {
-        require(
-            msg.sender == owner,
-            "Only the contract owner can call this function."
-        );
+    function withdraw(uint256 value) public onlyOwner {
         uint256 fee = (value * 300) / 10000;
         tokenX.transfer(owner, fee);
     }
