@@ -152,12 +152,12 @@ async function main() {
 
   // Create flow
 
-  // await createFlow(
-  //   "0x57B7bf6f792a6181Ec5aFB88cE7bcE330a9d1b67",
-  //   "0.5",
-  //   addrCryptoPlazaCampaign,
-  //   USDCx
-  // );
+  await createFlow(
+    "0x57B7bf6f792a6181Ec5aFB88cE7bcE330a9d1b67",
+    "0.5",
+    addrCryptoPlazaCampaign,
+    USDCx
+  );
 
   // Delete flow
 

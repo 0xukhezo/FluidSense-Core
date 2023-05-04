@@ -9,7 +9,7 @@ async function main() {
   );
 
   const _tokenX = "0xCAa7349CEA390F89641fe306D93591f87595dc1F"
-  const _owner = "0xDf3fd962ce5D03dA86aDA3095b44Cb757e4Ef033"
+  const _owner = "0xB59A5a10E7543AbfBd10D593834AE959f54BCB8C"
   const _usdcAddr = "0x2791bca1f2de4661ed88a30c99a7a9449aa84174";
 
   const campaignsFactory = await CampaignsFactory.deploy(_tokenX, _owner, _usdcAddr);

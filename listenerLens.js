@@ -144,17 +144,17 @@ async function main() {
     const alreadyWithFlow = await followersFromApi.filter(
       (follower) => follower.followerAddress === followerForSteam
     );
-    const mirrorPost = await fetchMirror(
-      profileIds,
-      clientFromApi.publicationId
-    );
-    console.log(mirrorPost);
-    if (mirrorPost === 0) {
-      writeToLog(
-        `${followerForSteam} no mirror the post ${clientFromApi.publicationId}`
-      );
-      return;
-    }
+    // const mirrorPost = await fetchMirror(
+    //   profileIds,
+    //   clientFromApi.publicationId
+    // );
+    // console.log(mirrorPost);
+    // if (mirrorPost === 0) {
+    //   writeToLog(
+    //     `${followerForSteam} no mirror the post ${clientFromApi.publicationId}`
+    //   );
+    //   return;
+    // }
     if (alreadyWithFlow.length !== 0) {
       writeToLog(
         `${followerForSteam} already with flow in ${clientFromApi.flowSenderAddress}`
@@ -164,33 +164,38 @@ async function main() {
     writeToLog(
       `Creating steam to  ${followerForSteam} in ${clientFromApi.flowSenderAddress}`
     );
-    console.log("Pium");
-    // const monthlyAmount = ethers.utils.parseEther(
-    //   clientFromApi.amountFlowRate.toString()
-    // );
-    // const calculatedFlowRate = Math.round(monthlyAmount / 2592000);
+    // console.log("Pium");
+    const monthlyAmount = ethers.utils.parseEther(
+      clientFromApi.amountFlowRate.toString()
+    );
+    const calculatedFlowRate = Math.round(monthlyAmount / 2592000);
 
-    // const feeData = await providerSuperfluid.getFeeData();
+    const feeData = await providerSuperfluid.getFeeData();
 
-    // const createFlowOperation = USDCx.createFlowByOperator({
-    //   sender: clientFromApi.flowSenderAddress,
-    //   receiver: followerForSteam,
-    //   flowRate: calculatedFlowRate,
-    //   overrides: {
-    //     gasPrice: feeData.gasPrice,
-    //     gasLimit: 9000000,
-    //   },
-    // });
+    const createFlowOperation = USDCx.createFlowByOperator({
+      sender: clientFromApi.flowSenderAddress,
+      receiver: followerForSteam,
+      flowRate: calculatedFlowRate,
+      overrides: {
+        gasPrice: feeData.gasPrice,
+        gasLimit: 9000000,
+      },
+    });
 
-    // await createFlowOperation.exec(signer);
-    // await postFollower(followerForSteam, clientFromApi.flowSenderAddress);
-    // writeToLog(
-    //   `Create flow done!, adding ${followerForSteam} to followers in ${clientFromApi.flowSenderAddress}`
-    // );
+    try {
+      await createFlowOperation.exec(signer);
+      await postFollower(followerForSteam, clientFromApi.flowSenderAddress);
+      writeToLog(
+        `Create flow done!, adding ${followerForSteam} to followers in ${clientFromApi.flowSenderAddress}`
+      );
+    } catch {
+      writeToLog(
+        `Error creating flow!, Can not be prossible to add ${followerForSteam} to ${clientFromApi.flowSenderAddress}`
+      );
+    }
   }
 
   async function steam(profileIds, newFollower, tx) {
-    await getClients();
     const client = clientsArray.filter((_client) => {
       return _client.clientProfile === profileIds;
     });
@@ -221,5 +226,5 @@ async function main() {
 }
 
 main().catch((error) => {
-  console.error(error);
+  writeToLog(`${error}`);
 });
