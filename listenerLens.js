@@ -144,17 +144,17 @@ async function main() {
     const alreadyWithFlow = await followersFromApi.filter(
       (follower) => follower.followerAddress === followerForSteam
     );
-    // const mirrorPost = await fetchMirror(
-    //   profileIds,
-    //   clientFromApi.publicationId
-    // );
-    // console.log(mirrorPost);
-    // if (mirrorPost === 0) {
-    //   writeToLog(
-    //     `${followerForSteam} no mirror the post ${clientFromApi.publicationId}`
-    //   );
-    //   return;
-    // }
+    const mirrorPost = await fetchMirror(
+      profileIds,
+      clientFromApi.publicationId
+    );
+
+    if (mirrorPost === 0) {
+      writeToLog(
+        `${followerForSteam} no mirror the post ${clientFromApi.publicationId}`
+      );
+      return;
+    }
     if (alreadyWithFlow.length !== 0) {
       writeToLog(
         `${followerForSteam} already with flow in ${clientFromApi.flowSenderAddress}`
@@ -164,7 +164,6 @@ async function main() {
     writeToLog(
       `Creating steam to  ${followerForSteam} in ${clientFromApi.flowSenderAddress}`
     );
-    // console.log("Pium");
     const monthlyAmount = ethers.utils.parseEther(
       clientFromApi.amountFlowRate.toString()
     );

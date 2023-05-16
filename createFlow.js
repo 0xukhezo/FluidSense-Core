@@ -23,7 +23,7 @@ if (process.env.ENV === "prod") {
 }
 
 //Const
-const addrCryptoPlazaCampaign = "0xc0c95420b00b46cad44eed898471d9b32ce818b4";
+const addrCryptoPlazaCampaign = "0x59664b7Ecfd803347c92dbA1a7020cAb9AB0a430";
 
 const providerSuperfluid = ethers.getDefaultProvider(
   `${RPC_ENDPOINT}${ALCHEMY_KEY}`
@@ -140,22 +140,23 @@ async function main() {
 
   // Check NFT Balance
 
-  const contractLensNFT = new ethers.Contract(
-    "0xa7f21ff23D55f9f34B4F8c45E930333AA80f5E38",
-    ERC721,
-    providerSuperfluid
-  );
-  const nftInBalance = await contractLensNFT.balanceOf(
-    "0x57B7bf6f792a6181Ec5aFB88cE7bcE330a9d1b67"
-  );
-  console.log(Number(nftInBalance.toString()));
+  // const contractLensNFT = new ethers.Contract(
+  //   "0xa7f21ff23D55f9f34B4F8c45E930333AA80f5E38",
+  //   ERC721,
+  //   providerSuperfluid
+  // );
+
+  // const nftInBalance = await contractLensNFT.balanceOf(
+  //   "0x57B7bf6f792a6181Ec5aFB88cE7bcE330a9d1b67"
+  // );
+  // console.log(Number(nftInBalance.toString()));
 
   // Create flow
 
   await createFlow(
-    "0x57B7bf6f792a6181Ec5aFB88cE7bcE330a9d1b67",
+    "0x5386Bf44B00c20db94431b563CEA30864ca04Ff1",
     "0.5",
-    addrCryptoPlazaCampaign,
+    "0x0D4547fd13ADeDcD8b9DA5097f349Ee26f7DD5a1",
     USDCx
   );
 
@@ -164,8 +165,8 @@ async function main() {
   // const feeData = await providerSuperfluid.getFeeData();
 
   // const deleteFlowOperation = sf.cfaV1.deleteFlowByOperator({
-  //   sender: "0xc0c95420b00b46cad44eed898471d9b32ce818b4", // addressCampaing
-  //   receiver: "0xb3204E7bD17273790f5ffb0Bb1e591Ab0011dC55", // addressFollower
+  //   sender: "0x8b3D194628353a43D0d3829470ccEbECD304c2dC", // addressCampaing
+  //   receiver: "0x5386Bf44B00c20db94431b563CEA30864ca04Ff1", // addressFollower
   //   superToken: USDCx.address,
   //   overrides: {
   //     gasPrice: feeData.gasPrice,
@@ -177,7 +178,7 @@ async function main() {
 
   // await deleteFollower(
   //   "0xc0c95420b00b46cad44eed898471d9b32ce818b4",
-  //   "0xb3204E7bD17273790f5ffb0Bb1e591Ab0011dC55"
+  //   "0x5386Bf44B00c20db94431b563CEA30864ca04Ff1"
   // );
 }
 
