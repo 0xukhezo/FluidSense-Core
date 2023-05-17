@@ -101,6 +101,9 @@ async function main() {
   }
 
   async function fetchMirror(profileId, publicationId) {
+    if (publicationId === "0x00000") {
+      return;
+    }
     const queryBody = `query Publication {
       publication(request: {
         publicationId: "${publicationId}"
@@ -114,6 +117,22 @@ async function main() {
     try {
       let response = await client.query({ query: Profiles(queryBody) });
       return response.data.publication.mirrors.length;
+    } catch (err) {
+      console.log({ err });
+    }
+  }
+
+  async function fetchProfileId(followerForSteam) {
+    const queryBody = `query Profiles {
+      profiles(request: { ownedBy: ["${followerForSteam}"], limit: 1 }) {
+        items {
+          id
+        }
+      }
+    }`;
+    try {
+      let response = await client.query({ query: Profiles(queryBody) });
+      return response.data.profiles.items.id;
     } catch (err) {
       console.log({ err });
     }
@@ -133,28 +152,25 @@ async function main() {
     profileIds
   ) {
     let followerForSteam = newFollower;
-    if (followerForSteam === "0x5a84eC20F88e94dC3EB96cE77695997f8446a22D") {
-      const tx = await providerLens.getTransaction(txHash);
-      const iface = new ethers.utils.Interface([
-        "function followFor(uint256[] profileIds,address[] mintFor,bytes[] datas)",
-      ]);
-      const result = iface.decodeFunctionData("followFor", tx.data);
-      followerForSteam = result.mintFor[0];
-    }
-    const alreadyWithFlow = await followersFromApi.filter(
-      (follower) => follower.followerAddress === followerForSteam
-    );
-    const mirrorPost = await fetchMirror(
-      profileIds,
-      clientFromApi.publicationId
-    );
-
+    const tx = await providerLens.getTransaction(txHash);
+    const iface = new ethers.utils.Interface([
+      "function followFor(uint256[] profileIds,address[] mintFor,bytes[] datas)",
+    ]);
+    const result = iface.decodeFunctionData("followFor", tx.data);
+    followerForSteam = result.mintFor[0];
+    const profileIdMirror = await fetchProfileId(followerForSteam);
+    writeToLog(`ProfileId  ${profileIdMirror}`);
+    const mirrorPost = await fetchMirror(profileIds, profileIdMirror);
     if (mirrorPost === 0) {
       writeToLog(
         `${followerForSteam} no mirror the post ${clientFromApi.publicationId}`
       );
       return;
     }
+    const alreadyWithFlow = await followersFromApi.filter(
+      (follower) => follower.followerAddress === followerForSteam
+    );
+
     if (alreadyWithFlow.length !== 0) {
       writeToLog(
         `${followerForSteam} already with flow in ${clientFromApi.flowSenderAddress}`
@@ -198,14 +214,27 @@ async function main() {
     const client = clientsArray.filter((_client) => {
       return _client.clientProfile === profileIds;
     });
-    const followers = await getFollowers(client[0].flowSenderAddress);
-    await createFlow(
-      newFollower,
-      client[0],
-      tx.transactionHash,
-      followers,
-      profileIds
-    );
+    if (client.length > 1) {
+      for (let i = 0; i < client.length; i++) {
+        const followers = await getFollowers(client[i].flowSenderAddress);
+        await createFlow(
+          newFollower,
+          client[i],
+          tx.transactionHash,
+          followers,
+          profileIds
+        );
+      }
+    } else {
+      const followers = await getFollowers(client[0].flowSenderAddress);
+      await createFlow(
+        newFollower,
+        client[0],
+        tx.transactionHash,
+        followers,
+        profileIds
+      );
+    }
   }
 
   await getClients();
@@ -218,6 +247,7 @@ async function main() {
       if (
         clientsArray.some((cli) => cli.clientProfile === profileIds[0]._hex)
       ) {
+        console.log(tx, newFollower);
         await steam(profileIds[0]._hex, newFollower, tx);
       }
     }
