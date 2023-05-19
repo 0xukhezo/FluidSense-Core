@@ -159,7 +159,6 @@ async function main() {
     const result = iface.decodeFunctionData("followFor", tx.data);
     followerForSteam = result.mintFor[0];
     const profileIdMirror = await fetchProfileId(followerForSteam);
-    writeToLog(`ProfileId  ${profileIdMirror}`);
     const mirrorPost = await fetchMirror(profileIds, profileIdMirror);
     if (mirrorPost === 0) {
       writeToLog(
@@ -247,7 +246,6 @@ async function main() {
       if (
         clientsArray.some((cli) => cli.clientProfile === profileIds[0]._hex)
       ) {
-        console.log(tx, newFollower);
         await steam(profileIds[0]._hex, newFollower, tx);
       }
     }

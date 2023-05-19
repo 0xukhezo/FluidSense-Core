@@ -154,9 +154,9 @@ async function main() {
   // Create flow
 
   await createFlow(
-    "0x0D4547fd13ADeDcD8b9DA5097f349Ee26f7DD5a1",
+    "0x43DdF2bF7B0d2bb2D3904298763bcA2D3F2b40E0",
     "0.5",
-    "0x43ddf2bf7b0d2bb2d3904298763bca2d3f2b40e0",
+    "0xa220eacfb34906a0a7a599c6b369c18ea4e2eae6",
     USDCx
   );
 
