@@ -27,7 +27,7 @@ contract Campaign is Ownable {
             _operator,
             (baseToken.balanceOf(address(this)) * 300) / 10000
         );
-        tokenX.upgrade(baseToken.balanceOf(address(this)) * 10 ** 12);
+        tokenX.upgrade(baseToken.balanceOf(address(this)));
     }
 
     function withdraw(uint256 value) public onlyOwner {

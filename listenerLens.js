@@ -60,8 +60,6 @@ async function main() {
 
   let clientsArray = [];
 
-  const USDCx = await sf.loadSuperToken("USDCx");
-
   const options = {
     method: "GET",
     headers: {
@@ -70,24 +68,16 @@ async function main() {
   };
 
   async function getClients() {
-    try {
-      const response = await fetch(`${API_ENDPOINT}/clients`, options);
-      clientsArray = await response.json();
-    } catch (err) {
-      writeToLog(err);
-    }
+    const response = await fetch(`${API_ENDPOINT}/clients`, options);
+    clientsArray = await response.json();
   }
 
   async function getFollowers(flowSenderAddress) {
-    try {
-      const response = await fetch(
-        `${API_ENDPOINT}/followers?flowSenderAddress=${flowSenderAddress}`,
-        options
-      );
-      return response.json();
-    } catch (err) {
-      writeToLog(err);
-    }
+    const response = await fetch(
+      `${API_ENDPOINT}/followers?flowSenderAddress=${flowSenderAddress}`,
+      options
+    );
+    return response.json();
   }
 
   async function postFollower(followerAddress, flowSenderAddress) {
@@ -126,7 +116,7 @@ async function main() {
       let response = await client.query({ query: Profiles(queryBody) });
       return response.data.publication.mirrors.length;
     } catch (err) {
-      writeToLog(`${err}`);
+      writeToLog(err);
     }
   }
 
@@ -142,7 +132,7 @@ async function main() {
       let response = await client.query({ query: Profiles(queryBody) });
       return response.data.profiles.items.id;
     } catch (err) {
-      writeToLog(`${err}`);
+      writeToLog(err);
     }
   }
 
@@ -157,15 +147,21 @@ async function main() {
     clientFromApi,
     txHash,
     followersFromApi,
-    profileIds
+    profileIds,
+    token
   ) {
     let followerForSteam = newFollower;
-    const tx = await providerLens.getTransaction(txHash);
-    const iface = new ethers.utils.Interface([
-      "function followFor(uint256[] profileIds,address[] mintFor,bytes[] datas)",
-    ]);
-    const result = iface.decodeFunctionData("followFor", tx.data);
-    followerForSteam = result.mintFor[0];
+    const tokenX = await sf.loadSuperToken(token);
+    try {
+      const tx = await providerLens.getTransaction(txHash);
+      const iface = new ethers.utils.Interface([
+        "function followFor(uint256[] profileIds,address[] mintFor,bytes[] datas)",
+      ]);
+      const result = iface.decodeFunctionData("followFor", tx.data);
+      followerForSteam = result.mintFor[0];
+    } catch {
+      followerForSteam = newFollower;
+    }
     const profileIdMirror = await fetchProfileId(followerForSteam);
     const mirrorPost = await fetchMirror(profileIds, profileIdMirror);
     if (mirrorPost === 0) {
@@ -177,6 +173,7 @@ async function main() {
     const alreadyWithFlow = await followersFromApi.filter(
       (follower) => follower.followerAddress === followerForSteam
     );
+
     if (alreadyWithFlow.length !== 0) {
       writeToLog(
         `${followerForSteam} already with flow in ${clientFromApi.flowSenderAddress}`
@@ -193,7 +190,7 @@ async function main() {
 
     const feeData = await providerSuperfluid.getFeeData();
 
-    const createFlowOperation = USDCx.createFlowByOperator({
+    const createFlowOperation = tokenX.createFlowByOperator({
       sender: clientFromApi.flowSenderAddress,
       receiver: followerForSteam,
       flowRate: calculatedFlowRate,
@@ -228,7 +225,8 @@ async function main() {
           client[i],
           tx.transactionHash,
           followers,
-          profileIds
+          profileIds,
+          client[i].token
         );
       }
     } else {
@@ -238,7 +236,8 @@ async function main() {
         client[0],
         tx.transactionHash,
         followers,
-        profileIds
+        profileIds,
+        client[0].token
       );
     }
   }

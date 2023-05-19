@@ -3,16 +3,17 @@ import { developmentChains } from "../helper-hardhat-config";
 import { verify } from "../utils/verify";
 
 async function main() {
+  const CampaignsFactory = await ethers.getContractFactory("CampaignFactory");
 
-  const CampaignsFactory = await ethers.getContractFactory(
-    "CampaignFactory"
+  const _tokenX = "0x1305F6B6Df9Dc47159D12Eb7aC2804d4A33173c2";
+  const _owner = "0xB59A5a10E7543AbfBd10D593834AE959f54BCB8C";
+  const _token = "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063";
+
+  const campaignsFactory = await CampaignsFactory.deploy(
+    _tokenX,
+    _owner,
+    _token
   );
-
-  const _tokenX = "0xCAa7349CEA390F89641fe306D93591f87595dc1F"
-  const _owner = "0xB59A5a10E7543AbfBd10D593834AE959f54BCB8C"
-  const _usdcAddr = "0x2791bca1f2de4661ed88a30c99a7a9449aa84174";
-
-  const campaignsFactory = await CampaignsFactory.deploy(_tokenX, _owner, _usdcAddr);
 
   await campaignsFactory.deployed();
 
@@ -25,7 +26,7 @@ async function main() {
     process.env.POLYGONSCAN_API
   ) {
     console.log("Verifying...");
-    await verify(campaignsFactory.address, [_tokenX, _owner, _usdcAddr]);
+    await verify(campaignsFactory.address, [_tokenX, _owner, _token]);
   }
 }
 
