@@ -70,16 +70,24 @@ async function main() {
   };
 
   async function getClients() {
-    const response = await fetch(`${API_ENDPOINT}/clients`, options);
-    clientsArray = await response.json();
+    try {
+      const response = await fetch(`${API_ENDPOINT}/clients`, options);
+      clientsArray = await response.json();
+    } catch (err) {
+      writeToLog(err);
+    }
   }
 
   async function getFollowers(flowSenderAddress) {
-    const response = await fetch(
-      `${API_ENDPOINT}/followers?flowSenderAddress=${flowSenderAddress}`,
-      options
-    );
-    return response.json();
+    try {
+      const response = await fetch(
+        `${API_ENDPOINT}/followers?flowSenderAddress=${flowSenderAddress}`,
+        options
+      );
+      return response.json();
+    } catch (err) {
+      writeToLog(err);
+    }
   }
 
   async function postFollower(followerAddress, flowSenderAddress) {
@@ -118,7 +126,7 @@ async function main() {
       let response = await client.query({ query: Profiles(queryBody) });
       return response.data.publication.mirrors.length;
     } catch (err) {
-      console.log({ err });
+      writeToLog(`${err}`);
     }
   }
 
@@ -134,7 +142,7 @@ async function main() {
       let response = await client.query({ query: Profiles(queryBody) });
       return response.data.profiles.items.id;
     } catch (err) {
-      console.log({ err });
+      writeToLog(`${err}`);
     }
   }
 
@@ -169,7 +177,6 @@ async function main() {
     const alreadyWithFlow = await followersFromApi.filter(
       (follower) => follower.followerAddress === followerForSteam
     );
-
     if (alreadyWithFlow.length !== 0) {
       writeToLog(
         `${followerForSteam} already with flow in ${clientFromApi.flowSenderAddress}`
