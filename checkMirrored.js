@@ -47,12 +47,12 @@ function writeToLog(message) {
 }
 
 async function main() {
-  const providerLens = new ethers.providers.WebSocketProvider(
-    `${WSS_ENDPOINT}${ALCHEMY_KEY}`
-  );
-
   const providerSuperfluid = ethers.getDefaultProvider(
     `${RPC_ENDPOINT}${ALCHEMY_KEY}`
+  );
+
+  const providerLens = new ethers.providers.WebSocketProvider(
+    `${WSS_ENDPOINT}${ALCHEMY_KEY}`
   );
 
   const signer = new ethers.Wallet(process.env.PRIVATE_KEY, providerSuperfluid);
@@ -92,23 +92,28 @@ async function main() {
     }
   }
 
-  async function deleteFollower(flowSenderAddress, followerAddress) {
+  async function postFollower(followerAddress, flowSenderAddress) {
     try {
-      await fetch(
-        `${API_ENDPOINT}/followers?flowSenderAddress=${flowSenderAddress}&followerAddress=${followerAddress}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      await fetch(`${API_ENDPOINT}/followers`, {
+        method: "POST",
+        headers: {
+          accept: "application/json",
+        },
+        body: JSON.stringify({
+          followerAddress: followerAddress,
+          flowSenderAddress: flowSenderAddress,
+        }),
+        mode: "no-cors",
+      });
     } catch (err) {
-      writeToLog(`Error deleting followers in cleaner ${err}`);
+      writeToLog(err);
     }
   }
 
   async function fetchMirrors(publicationId, ownerProfileId) {
+    if (clientFromApi.publicationId === "0x00000") {
+      return;
+    }
     const queryBody = `
     query Profiles($cursor: Cursor) {
       profiles(
@@ -160,88 +165,86 @@ async function main() {
     }
   }
 
-  async function cleanSteams(clientFromApi) {
-    let peopleWhoMirrored = [];
-    let isMirror = true;
+  async function checkMirrored(clientFromApi) {
+    const tokenX = await sf.loadSuperToken(clientFromApi.tokenX);
+
     try {
+      const peopleWhoMirrored = await fetchMirrors(
+        clientFromApi.publicationId,
+        clientFromApi.clientProfile
+      );
+
       const followersFromApi = await getFollowers(
         clientFromApi.flowSenderAddress
       );
-      if (clientFromApi.publicationId !== "0x00000") {
-        peopleWhoMirrored = await fetchMirrors(
-          clientFromApi.publicationId,
-          clientFromApi.clientProfile
-        );
-      }
       const contractLensNFT = new ethers.Contract(
         clientFromApi.followNftAddress,
         ERC721,
         providerLens
       );
-      const feeData = await providerSuperfluid.getFeeData();
-
-      for (let i = 0; i < followersFromApi.length; ) {
-        const follower = followersFromApi[i];
+      for (let i = 0; i < peopleWhoMirrored.length; i++) {
+        const followerToCheck = peopleWhoMirrored[i];
         try {
-          if (clientFromApi.publicationId !== "0x00000") {
-            isMirror = peopleWhoMirrored.find(
-              (person) => person.ownedBy === follower.followerAddress
-            );
-          }
           const nftInBalance = await contractLensNFT.balanceOf(
-            follower.followerAddress
+            followerToCheck.ownedBy
           );
-
-          if (Number(nftInBalance.toString()) === 0 || isMirror === undefined) {
-            writeToLog(
-              `Cleaning... ${follower.followerAddress} from ${clientFromApi.flowSenderAddress}`
-            );
-
-            const tokenX = await sf.loadSuperToken(clientFromApi.tokenX);
-
-            const deleteFlowOperation = sf.cfaV1.deleteFlowByOperator({
-              sender: clientFromApi.flowSenderAddress,
-              receiver: follower.followerAddress,
-              superToken: tokenX.address,
-              overrides: {
-                gasPrice: feeData.gasPrice,
-                gasLimit: 90000000,
-              },
-            });
-
-            await deleteFlowOperation
-              .exec(signer)
-              .then(async () => {
-                await deleteFollower(
-                  clientFromApi.flowSenderAddress,
-                  follower.followerAddress
-                )
-                  .then(() =>
-                    writeToLog(
-                      `Deleted ${follower.followerAddress} from followers of ${clientFromApi.flowSenderAddress}`
-                    )
-                  )
-                  .catch(
-                    (err) =>
-                      `Error executing delete flowower operation in cleaner ${err}`
-                  );
-                writeToLog(
-                  `Cleaned ${follower.followerAddress} from ${clientFromApi.flowSenderAddress}`
-                );
-              })
-              .catch(
-                (err) =>
-                  `Error executing delete flow operation  in cleaner ${err}`
+          const alreadyWithFlow = await followersFromApi.filter(
+            (follower) => follower.followerAddress === followerToCheck.ownedBy
+          );
+          if (
+            // He is following
+            Number(nftInBalance.toString()) !== 0
+          ) {
+            if (alreadyWithFlow.length !== 0) {
+              writeToLog(
+                `${followerToCheck.ownedBy} already with flow in ${clientFromApi.flowSenderAddress}`
               );
+            } else {
+              writeToLog(
+                `Creating steam to ${followerToCheck.ownedBy} in ${clientFromApi.flowSenderAddress}`
+              );
+              const monthlyAmount = ethers.utils.parseEther(
+                clientFromApi.amountFlowRate.toString()
+              );
+              const calculatedFlowRate = Math.round(monthlyAmount / 2592000);
+
+              const feeData = await providerSuperfluid.getFeeData();
+
+              const createFlowOperation = tokenX.createFlowByOperator({
+                sender: clientFromApi.flowSenderAddress,
+                receiver: followerToCheck.ownedBy,
+                flowRate: calculatedFlowRate,
+                overrides: {
+                  gasPrice: feeData.gasPrice,
+                  gasLimit: 90000000,
+                },
+              });
+
+              try {
+                await createFlowOperation.exec(signer);
+                await postFollower(
+                  followerToCheck.ownedBy,
+                  clientFromApi.flowSenderAddress
+                );
+                writeToLog(
+                  `Create flow done!, adding ${followerToCheck.ownedBy} to followers in ${clientFromApi.flowSenderAddress}`
+                );
+              } catch {
+                writeToLog(
+                  `Error creating flow! It is not possible to add ${followerToCheck.ownedBy} to ${clientFromApi.flowSenderAddress}`
+                );
+              }
+            }
           }
         } catch (error) {
-          writeToLog(`An error happened executing the cleaner: ${error}`);
+          writeToLog(
+            `An error happened executing the checker mirrors: ${error}`
+          );
         }
-        i++;
       }
     } catch (error) {
       writeToLog(
-        `An error happened creating the set up necesary for the cleaner: ${error}`
+        `An error happened creating the set up necesary for the checker mirrors: ${error}`
       );
     }
   }
@@ -249,7 +252,7 @@ async function main() {
   await getClients();
 
   for (let i = 0; i < clientsArray.length; i++) {
-    await cleanSteams(clientsArray[i]);
+    await checkMirrored(clientsArray[i]);
   }
 }
 
@@ -259,6 +262,6 @@ main()
     process.exit();
   })
   .catch((error) => {
-    console.error(`Error getting connect to providerLens: ${error}`);
+    console.error(error);
     process.exit(1);
   });

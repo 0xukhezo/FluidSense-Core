@@ -7,25 +7,25 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract CampaignFactory {
     address immutable owner;
-    ISuperToken immutable token;
-    ERC20 internal immutable usdc;
+    ISuperToken immutable tokenX;
+    ERC20 internal immutable token;
 
     event NewCampaign(address indexed sender, address campaign);
 
-    constructor(ISuperToken _tokenX, address _owner, ERC20 _usdc) {
+    constructor(ISuperToken _tokenX, address _owner, ERC20 _token) {
         owner = _owner;
-        token = ISuperToken(_tokenX);
-        usdc = _usdc;
+        tokenX = ISuperToken(_tokenX);
+        token = _token;
     }
 
     function deployCampaign(uint256 amount) public {
         require(
-            usdc.allowance(msg.sender, address(this)) >= amount,
+            token.allowance(msg.sender, address(this)) >= amount,
             "Insuficiente amount"
         );
-        usdc.transferFrom(msg.sender, address(this), amount);
+        token.transferFrom(msg.sender, address(this), amount);
 
-        bytes memory bytecode = getByteCode(token, owner);
+        bytes memory bytecode = getByteCode(tokenX, owner);
 
         bytes32 _salt = generateSalt();
 
@@ -40,9 +40,9 @@ contract CampaignFactory {
 
         address campaign = address(uint160(uint(hash)));
 
-        usdc.transfer(campaign, amount);
+        token.transfer(campaign, amount);
 
-        Campaign newCampaign = new Campaign{salt: _salt}(token, owner);
+        Campaign newCampaign = new Campaign{salt: _salt}(tokenX, owner);
 
         emit NewCampaign(msg.sender, address(newCampaign));
     }

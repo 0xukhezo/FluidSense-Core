@@ -2,12 +2,14 @@ import { ethers, network } from "hardhat";
 import { developmentChains } from "../helper-hardhat-config";
 import { verify } from "../utils/verify";
 
+//npx hardhat run --network polygon scripts/deploy.ts
+
 async function main() {
   const CampaignsFactory = await ethers.getContractFactory("CampaignFactory");
 
-  const _tokenX = "0x1305F6B6Df9Dc47159D12Eb7aC2804d4A33173c2";
+  const _tokenX = "0x27e1e4E6BC79D93032abef01025811B7E4727e85";
   const _owner = "0xB59A5a10E7543AbfBd10D593834AE959f54BCB8C";
-  const _token = "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063";
+  const _token = "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619";
 
   const campaignsFactory = await CampaignsFactory.deploy(
     _tokenX,

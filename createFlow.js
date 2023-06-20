@@ -3,7 +3,7 @@ require("dotenv").config();
 
 const fetch = require("cross-fetch");
 const { Framework } = require("@superfluid-finance/sdk-core");
-const { ERC721 } = require("./const/const");
+const { ERC721, campaignABI } = require("./const/const");
 
 let ALCHEMY_KEY;
 let RPC_ENDPOINT;
@@ -136,7 +136,7 @@ async function main() {
     provider: providerSuperfluid,
   });
 
-  const USDCx = await sf.loadSuperToken("USDCx");
+  const USDCx = await sf.loadSuperToken("ETHx");
 
   // Check NFT Balance
 
@@ -155,8 +155,8 @@ async function main() {
 
   await createFlow(
     "0x43DdF2bF7B0d2bb2D3904298763bcA2D3F2b40E0",
-    "0.5",
-    "0xa220eacfb34906a0a7a599c6b369c18ea4e2eae6",
+    "0.1",
+    "0x3DeB09A89bbFCEA78CC15Cc7734f1233Ce3187eE",
     USDCx
   );
 
@@ -165,8 +165,8 @@ async function main() {
   // const feeData = await providerSuperfluid.getFeeData();
 
   // const deleteFlowOperation = sf.cfaV1.deleteFlowByOperator({
-  //   sender: "0x8b3D194628353a43D0d3829470ccEbECD304c2dC", // addressCampaing
-  //   receiver: "0x5386Bf44B00c20db94431b563CEA30864ca04Ff1", // addressFollower
+  //   sender: "0xc0c95420b00b46CaD44eED898471d9B32ce818b4", // addressCampaing
+  //   receiver: "0x59664b7Ecfd803347c92dbA1a7020cAb9AB0a430", // addressFollower
   //   superToken: USDCx.address,
   //   overrides: {
   //     gasPrice: feeData.gasPrice,
@@ -177,9 +177,41 @@ async function main() {
   // await deleteFlowOperation.exec(signer);
 
   // await deleteFollower(
-  //   "0xc0c95420b00b46cad44eed898471d9b32ce818b4",
-  //   "0x5386Bf44B00c20db94431b563CEA30864ca04Ff1"
+  //   "0x065dFbB8B36b6502F097C65E8f7279926D5abcC1",
+  //   "0x7440050b3fd5d3dcd7de6f956caf332f4161f36f"
   // );
+
+  // Withdraw
+
+  // const contractCampaign = new ethers.Contract(
+  //   "0xe7d13f793715826866bc382334b254f723C8E020", //campaign
+  //   campaignABI,
+  //   signer
+  // );
+
+  // const gasPrice = await providerSuperfluid.getGasPrice();
+
+  // const tx = await contractCampaign.withdrawTokenX(
+  //   "0x1305F6B6Df9Dc47159D12Eb7aC2804d4A33173c2",
+  //   "170000000000000000",
+  //   { gasPrice }
+  // );
+  // tx.wait(1);
+
+  // Charge Fee
+
+  // const contractCampaign = new ethers.Contract(
+  //   "0x45414619ac13b61d0bf3c58A9B92c935D96cAcF2", //campaign
+  //   campaignABI,
+  //   signer
+  // );
+
+  // const gasPrice = await providerSuperfluid.getGasPrice();
+
+  // const tx = await contractCampaign.chargeFee("100000000000000000", {
+  //   gasPrice,
+  // });
+  // tx.wait(1);
 }
 
 main();

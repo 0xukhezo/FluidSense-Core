@@ -22,10 +22,17 @@ const config: HardhatUserConfig = {
       accounts: [PRIVATE_KEY],
       chainId: 137,
     },
+    hardhat: {
+      forking: {
+        url: `https://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY_POLYGON}`!,
+        //blockNumber: 82409006
+      },
+      allowUnlimitedContractSize: true,
+    },
   },
   etherscan: {
     apiKey: {
-      polygon: POLYGONSCAN_API
+      polygon: POLYGONSCAN_API,
     },
   },
   solidity: "0.8.14",
