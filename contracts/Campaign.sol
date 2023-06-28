@@ -23,6 +23,7 @@ contract Campaign is Ownable {
         _upgrade(_operator);
     }
 
+    // this would be best as a public function
     function _upgrade(address _operator) internal {
         baseToken.transfer(
             _operator,
@@ -32,6 +33,7 @@ contract Campaign is Ownable {
         _transferOwnership(_operator);
     }
 
+    // this isn't necessary as the withdraw function can be used to charge the fee
     function chargeFee(uint256 value) external onlyOwner {
         uint256 fee = (value * 300) / 10000;
         tokenX.transfer(operator, fee);
@@ -43,6 +45,7 @@ contract Campaign is Ownable {
         require(token.transfer(operator, amount), "Token transfer failed");
     }
     
+    // this isn't needed as super tokens are ERC20 compatible
     function withdrawTokenX(address tokenXAddress, uint256 amount) external onlyOwner{
         ISuperToken token = ISuperToken(tokenXAddress);
         require(token.balanceOf(address(this)) >= amount, "Insufficient balance");
