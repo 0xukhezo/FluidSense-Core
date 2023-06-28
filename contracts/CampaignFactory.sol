@@ -1,65 +1,41 @@
-//SPDX-License-Identifier: Unlicensed
-pragma solidity 0.8.14;
+pragma solidity ^0.8.14;
 
-import {Campaign} from "./Campaign.sol";
 import {ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract CampaignFactory {
-    address immutable owner;
-    ISuperToken immutable tokenX;
-    ERC20 internal immutable token;
+import "./Campaign.sol";
 
-    event NewCampaign(address indexed sender, address campaign);
+contract CampaignFactory is Ownable {
 
-    constructor(ISuperToken _tokenX, address _owner, ERC20 _token) {
-        owner = _owner;
-        tokenX = ISuperToken(_tokenX);
-        token = _token;
+    event NewCampaign(address indexed token, address indexed campaign, address indexed campaignOperator);
+
+    // each campaign deployer has a nonce
+    mapping(address => uint256) public campaignNonces;
+
+    // get campaign address using create2 but locked to this factory and msg.sender
+    function getCampaignAddress(address caller, address superToken, address campaignOperator) public view returns (address) {
+        uint256 campaignNonce = campaignNonces[caller];
+        bytes32 salt = keccak256(abi.encodePacked(caller, ++campaignNonce));
+        bytes32 hash = keccak256(abi.encodePacked(bytes1(0xff), address(this), salt, _getBytecodeHash(superToken, campaignOperator)));
+        return address(uint160(uint256(hash)));
     }
 
-    function deployCampaign(uint256 amount) public {
-        require(
-            token.allowance(msg.sender, address(this)) >= amount,
-            "Insuficiente amount"
-        );
-        token.transferFrom(msg.sender, address(this), amount);
-
-        bytes memory bytecode = getByteCode(tokenX, owner);
-
-        bytes32 _salt = generateSalt();
-
-        bytes32 hash = keccak256(
-            abi.encodePacked(
-                bytes1(0xff),
-                address(this),
-                _salt,
-                keccak256(bytecode)
-            )
-        );
-
-        address campaign = address(uint160(uint(hash)));
-
-        token.transfer(campaign, amount);
-
-        Campaign newCampaign = new Campaign{salt: _salt}(tokenX, owner);
-
-        emit NewCampaign(msg.sender, address(newCampaign));
+    function _getBytecodeHash(address superToken, address campaignOperator) internal pure returns (bytes32) {
+        return keccak256(abi.encodePacked(type(Campaign).creationCode, abi.encode(superToken, campaignOperator)));
     }
 
-    function getByteCode(
-        ISuperToken _tokenX,
-        address _operator
-    ) internal pure returns (bytes memory) {
-        bytes memory bytecode = type(Campaign).creationCode;
-        return abi.encodePacked(bytecode, abi.encode(_tokenX, _operator));
-    }
 
-    function generateSalt() internal view returns (bytes32) {
-        uint256 nonce = 0;
-        bytes32 hash = keccak256(
-            abi.encodePacked(block.timestamp, address(this), nonce)
-        );
-        return hash;
+    // deploy new campaign using create2
+    function deployNewCampaign(
+        ISuperToken streamableToken,
+        address campaignOperator
+    ) public {
+        address caller = msg.sender;
+        campaignNonces[caller]++;
+        bytes32 _salt = keccak256(abi.encodePacked(caller, campaignNonces[caller]));
+        Campaign newCampaign = new Campaign{salt: _salt}(streamableToken, campaignOperator);
+        IERC20 token = IERC20(streamableToken.getUnderlyingToken());
+        emit NewCampaign(token, address(newCampaign), campaignOperator);
     }
 }
