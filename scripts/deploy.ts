@@ -7,15 +7,13 @@ import { verify } from "../utils/verify";
 async function main() {
   const CampaignsFactory = await ethers.getContractFactory("CampaignFactory");
 
+  /*
   const _tokenX = "0x27e1e4E6BC79D93032abef01025811B7E4727e85";
   const _owner = "0xB59A5a10E7543AbfBd10D593834AE959f54BCB8C";
   const _token = "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619";
-
-  const campaignsFactory = await CampaignsFactory.deploy(
-    _tokenX,
-    _owner,
-    _token
-  );
+  */
+ 
+  const campaignsFactory = await CampaignsFactory.deploy();
 
   await campaignsFactory.deployed();
 
@@ -28,7 +26,7 @@ async function main() {
     process.env.POLYGONSCAN_API
   ) {
     console.log("Verifying...");
-    await verify(campaignsFactory.address, [_tokenX, _owner, _token]);
+    await verify(campaignsFactory.address, []);
   }
 }
 

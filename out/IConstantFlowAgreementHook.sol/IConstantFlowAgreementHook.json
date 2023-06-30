@@ -1,0 +1,1096 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "contract ISuperfluidToken",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "flowOperator",
+              "type": "address"
+            },
+            {
+              "internalType": "int96",
+              "name": "flowRate",
+              "type": "int96"
+            }
+          ],
+          "internalType": "struct IConstantFlowAgreementHook.CFAHookParams",
+          "name": "newFlowData",
+          "type": "tuple"
+        }
+      ],
+      "name": "onCreate",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract ISuperfluidToken",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "flowOperator",
+              "type": "address"
+            },
+            {
+              "internalType": "int96",
+              "name": "flowRate",
+              "type": "int96"
+            }
+          ],
+          "internalType": "struct IConstantFlowAgreementHook.CFAHookParams",
+          "name": "newFlowData",
+          "type": "tuple"
+        },
+        {
+          "internalType": "int96",
+          "name": "oldFlowRate",
+          "type": "int96"
+        }
+      ],
+      "name": "onDelete",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract ISuperfluidToken",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "flowOperator",
+              "type": "address"
+            },
+            {
+              "internalType": "int96",
+              "name": "flowRate",
+              "type": "int96"
+            }
+          ],
+          "internalType": "struct IConstantFlowAgreementHook.CFAHookParams",
+          "name": "newFlowData",
+          "type": "tuple"
+        },
+        {
+          "internalType": "int96",
+          "name": "oldFlowRate",
+          "type": "int96"
+        }
+      ],
+      "name": "onUpdate",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "onCreate(address,(address,address,address,int96))": "e3d8fefe",
+    "onDelete(address,(address,address,address,int96),int96)": "2742e95a",
+    "onUpdate(address,(address,address,address,int96),int96)": "6ac5bc31"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.19+commit.7dd6d404\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"contract ISuperfluidToken\",\"name\":\"token\",\"type\":\"address\"},{\"components\":[{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"receiver\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"flowOperator\",\"type\":\"address\"},{\"internalType\":\"int96\",\"name\":\"flowRate\",\"type\":\"int96\"}],\"internalType\":\"struct IConstantFlowAgreementHook.CFAHookParams\",\"name\":\"newFlowData\",\"type\":\"tuple\"}],\"name\":\"onCreate\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contract ISuperfluidToken\",\"name\":\"token\",\"type\":\"address\"},{\"components\":[{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"receiver\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"flowOperator\",\"type\":\"address\"},{\"internalType\":\"int96\",\"name\":\"flowRate\",\"type\":\"int96\"}],\"internalType\":\"struct IConstantFlowAgreementHook.CFAHookParams\",\"name\":\"newFlowData\",\"type\":\"tuple\"},{\"internalType\":\"int96\",\"name\":\"oldFlowRate\",\"type\":\"int96\"}],\"name\":\"onDelete\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contract ISuperfluidToken\",\"name\":\"token\",\"type\":\"address\"},{\"components\":[{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"receiver\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"flowOperator\",\"type\":\"address\"},{\"internalType\":\"int96\",\"name\":\"flowRate\",\"type\":\"int96\"}],\"internalType\":\"struct IConstantFlowAgreementHook.CFAHookParams\",\"name\":\"newFlowData\",\"type\":\"tuple\"},{\"internalType\":\"int96\",\"name\":\"oldFlowRate\",\"type\":\"int96\"}],\"name\":\"onUpdate\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"Superfluid\",\"details\":\"The contract that implements this interface MUST only allow the CFA contract to call it\",\"kind\":\"dev\",\"methods\":{\"onCreate(address,(address,address,address,int96))\":{\"details\":\"This should be implemented with an onlyCFA modifier, so that only the CFA can call the function\",\"params\":{\"newFlowData\":\"the new flow data taken by the hook\",\"token\":\"the streamed super token\"},\"returns\":{\"_0\":\"bool\"}},\"onDelete(address,(address,address,address,int96),int96)\":{\"details\":\"This should be implemented with an onlyCFA modifier, so that only the CFA can call the function\",\"params\":{\"newFlowData\":\"the new flow data taken by the hook\",\"oldFlowRate\":\"previous flowrate\",\"token\":\"the streamed super token\"},\"returns\":{\"_0\":\"bool\"}},\"onUpdate(address,(address,address,address,int96),int96)\":{\"details\":\"This should be implemented with an onlyCFA modifier, so that only the CFA can call the function\",\"params\":{\"newFlowData\":\"the new flow data taken by the hook\",\"oldFlowRate\":\"previous flowrate\",\"token\":\"the streamed super token\"},\"returns\":{\"_0\":\"bool\"}}},\"title\":\"IConstantFlowAgreementHook interface\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"onCreate(address,(address,address,address,int96))\":{\"notice\":\"A hook which executes on stream creation if the hook contract is set in the CFA\"},\"onDelete(address,(address,address,address,int96),int96)\":{\"notice\":\"A hook which executes on stream deletion if the hook contract is set in the CFA\"},\"onUpdate(address,(address,address,address,int96),int96)\":{\"notice\":\"A hook which executes on stream update if the hook contract is set in the CFA\"}},\"notice\":\"An interface for the functions needed by a CFA hook contract\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"node_modules/@superfluid-finance/ethereum-contracts/contracts/interfaces/agreements/IConstantFlowAgreementHook.sol\":\"IConstantFlowAgreementHook\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@openzeppelin/=node_modules/@openzeppelin/\",\":@superfluid-finance/ethereum-contracts/contracts/=node_modules/@superfluid-finance/ethereum-contracts/contracts/\",\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":forge-std/=lib/forge-std/src/\"]},\"sources\":{\"node_modules/@superfluid-finance/ethereum-contracts/contracts/interfaces/agreements/IConstantFlowAgreementHook.sol\":{\"keccak256\":\"0x908b492d11c73d5f7f1707b3faf8e29aa5b6b35618b40e4b0c8f68873cbcf69b\",\"license\":\"AGPLv3\",\"urls\":[\"bzz-raw://6c7f2f71936ff6dab1f5c854f2d4fa5d37b576c0e904369ea240d96eab58781f\",\"dweb:/ipfs/QmZJCdchrpjZeuCZBo7okXnjxLFheLJcXvWqxLkxm5V5fv\"]},\"node_modules/@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperAgreement.sol\":{\"keccak256\":\"0x9b4fab6dcac1337f78e04d67d8c2b48b1de8bd4bbf14b475840f9dbda7b8f21e\",\"license\":\"AGPLv3\",\"urls\":[\"bzz-raw://cc2f3629ad0cb46bd4f595880591ad6c9d75a82d920cb9355e462fbf8022c820\",\"dweb:/ipfs/QmXMovxK4qpWT4yffXxUVjkMNwxEfS6mtn39mLSmjaxEdW\"]},\"node_modules/@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluidToken.sol\":{\"keccak256\":\"0x9cad3866982902ea88df0874a563d2e4aeba5a5bcc6289c30cccf9b4099d2fb6\",\"license\":\"AGPLv3\",\"urls\":[\"bzz-raw://e8fd960b259331f204c7cb7dcd32b09d68f4294e3b872fad00ad467609c3ef72\",\"dweb:/ipfs/QmeZFEvsDunXQGPbXFfN5AvfKM5am1FY8Xv6e3c4tNKvgY\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.19+commit.7dd6d404"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "contract ISuperfluidToken",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "struct IConstantFlowAgreementHook.CFAHookParams",
+              "name": "newFlowData",
+              "type": "tuple",
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "sender",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "flowOperator",
+                  "type": "address"
+                },
+                {
+                  "internalType": "int96",
+                  "name": "flowRate",
+                  "type": "int96"
+                }
+              ]
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "onCreate",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "contract ISuperfluidToken",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "struct IConstantFlowAgreementHook.CFAHookParams",
+              "name": "newFlowData",
+              "type": "tuple",
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "sender",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "flowOperator",
+                  "type": "address"
+                },
+                {
+                  "internalType": "int96",
+                  "name": "flowRate",
+                  "type": "int96"
+                }
+              ]
+            },
+            {
+              "internalType": "int96",
+              "name": "oldFlowRate",
+              "type": "int96"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "onDelete",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "contract ISuperfluidToken",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "struct IConstantFlowAgreementHook.CFAHookParams",
+              "name": "newFlowData",
+              "type": "tuple",
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "sender",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "flowOperator",
+                  "type": "address"
+                },
+                {
+                  "internalType": "int96",
+                  "name": "flowRate",
+                  "type": "int96"
+                }
+              ]
+            },
+            {
+              "internalType": "int96",
+              "name": "oldFlowRate",
+              "type": "int96"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "onUpdate",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {
+          "onCreate(address,(address,address,address,int96))": {
+            "details": "This should be implemented with an onlyCFA modifier, so that only the CFA can call the function",
+            "params": {
+              "newFlowData": "the new flow data taken by the hook",
+              "token": "the streamed super token"
+            },
+            "returns": {
+              "_0": "bool"
+            }
+          },
+          "onDelete(address,(address,address,address,int96),int96)": {
+            "details": "This should be implemented with an onlyCFA modifier, so that only the CFA can call the function",
+            "params": {
+              "newFlowData": "the new flow data taken by the hook",
+              "oldFlowRate": "previous flowrate",
+              "token": "the streamed super token"
+            },
+            "returns": {
+              "_0": "bool"
+            }
+          },
+          "onUpdate(address,(address,address,address,int96),int96)": {
+            "details": "This should be implemented with an onlyCFA modifier, so that only the CFA can call the function",
+            "params": {
+              "newFlowData": "the new flow data taken by the hook",
+              "oldFlowRate": "previous flowrate",
+              "token": "the streamed super token"
+            },
+            "returns": {
+              "_0": "bool"
+            }
+          }
+        },
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {
+          "onCreate(address,(address,address,address,int96))": {
+            "notice": "A hook which executes on stream creation if the hook contract is set in the CFA"
+          },
+          "onDelete(address,(address,address,address,int96),int96)": {
+            "notice": "A hook which executes on stream deletion if the hook contract is set in the CFA"
+          },
+          "onUpdate(address,(address,address,address,int96),int96)": {
+            "notice": "A hook which executes on stream update if the hook contract is set in the CFA"
+          }
+        },
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        ":@openzeppelin/=node_modules/@openzeppelin/",
+        ":@superfluid-finance/ethereum-contracts/contracts/=node_modules/@superfluid-finance/ethereum-contracts/contracts/",
+        ":ds-test/=lib/forge-std/lib/ds-test/src/",
+        ":forge-std/=lib/forge-std/src/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "node_modules/@superfluid-finance/ethereum-contracts/contracts/interfaces/agreements/IConstantFlowAgreementHook.sol": "IConstantFlowAgreementHook"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "node_modules/@superfluid-finance/ethereum-contracts/contracts/interfaces/agreements/IConstantFlowAgreementHook.sol": {
+        "keccak256": "0x908b492d11c73d5f7f1707b3faf8e29aa5b6b35618b40e4b0c8f68873cbcf69b",
+        "urls": [
+          "bzz-raw://6c7f2f71936ff6dab1f5c854f2d4fa5d37b576c0e904369ea240d96eab58781f",
+          "dweb:/ipfs/QmZJCdchrpjZeuCZBo7okXnjxLFheLJcXvWqxLkxm5V5fv"
+        ],
+        "license": "AGPLv3"
+      },
+      "node_modules/@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperAgreement.sol": {
+        "keccak256": "0x9b4fab6dcac1337f78e04d67d8c2b48b1de8bd4bbf14b475840f9dbda7b8f21e",
+        "urls": [
+          "bzz-raw://cc2f3629ad0cb46bd4f595880591ad6c9d75a82d920cb9355e462fbf8022c820",
+          "dweb:/ipfs/QmXMovxK4qpWT4yffXxUVjkMNwxEfS6mtn39mLSmjaxEdW"
+        ],
+        "license": "AGPLv3"
+      },
+      "node_modules/@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluidToken.sol": {
+        "keccak256": "0x9cad3866982902ea88df0874a563d2e4aeba5a5bcc6289c30cccf9b4099d2fb6",
+        "urls": [
+          "bzz-raw://e8fd960b259331f204c7cb7dcd32b09d68f4294e3b872fad00ad467609c3ef72",
+          "dweb:/ipfs/QmeZFEvsDunXQGPbXFfN5AvfKM5am1FY8Xv6e3c4tNKvgY"
+        ],
+        "license": "AGPLv3"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "node_modules/@superfluid-finance/ethereum-contracts/contracts/interfaces/agreements/IConstantFlowAgreementHook.sol",
+    "id": 50840,
+    "exportedSymbols": {
+      "IConstantFlowAgreementHook": [
+        50839
+      ],
+      "ISuperfluidToken": [
+        53981
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "35:2041:53",
+    "nodes": [
+      {
+        "id": 50786,
+        "nodeType": "PragmaDirective",
+        "src": "35:23:53",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ]
+      },
+      {
+        "id": 50788,
+        "nodeType": "ImportDirective",
+        "src": "60:70:53",
+        "nodes": [],
+        "absolutePath": "node_modules/@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluidToken.sol",
+        "file": "../superfluid/ISuperfluidToken.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 50840,
+        "sourceUnit": 53982,
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 50787,
+              "name": "ISuperfluidToken",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 53981,
+              "src": "69:16:53",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "id": 50839,
+        "nodeType": "ContractDefinition",
+        "src": "373:1702:53",
+        "nodes": [
+          {
+            "id": 50798,
+            "nodeType": "StructDefinition",
+            "src": "416:132:53",
+            "nodes": [],
+            "canonicalName": "IConstantFlowAgreementHook.CFAHookParams",
+            "members": [
+              {
+                "constant": false,
+                "id": 50791,
+                "mutability": "mutable",
+                "name": "sender",
+                "nameLocation": "455:6:53",
+                "nodeType": "VariableDeclaration",
+                "scope": 50798,
+                "src": "447:14:53",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 50790,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "447:7:53",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 50793,
+                "mutability": "mutable",
+                "name": "receiver",
+                "nameLocation": "479:8:53",
+                "nodeType": "VariableDeclaration",
+                "scope": 50798,
+                "src": "471:16:53",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 50792,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "471:7:53",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 50795,
+                "mutability": "mutable",
+                "name": "flowOperator",
+                "nameLocation": "505:12:53",
+                "nodeType": "VariableDeclaration",
+                "scope": 50798,
+                "src": "497:20:53",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 50794,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "497:7:53",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 50797,
+                "mutability": "mutable",
+                "name": "flowRate",
+                "nameLocation": "533:8:53",
+                "nodeType": "VariableDeclaration",
+                "scope": 50798,
+                "src": "527:14:53",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_int96",
+                  "typeString": "int96"
+                },
+                "typeName": {
+                  "id": 50796,
+                  "name": "int96",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "527:5:53",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_int96",
+                    "typeString": "int96"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "CFAHookParams",
+            "nameLocation": "423:13:53",
+            "scope": 50839,
+            "visibility": "public"
+          },
+          {
+            "id": 50810,
+            "nodeType": "FunctionDefinition",
+            "src": "889:116:53",
+            "nodes": [],
+            "documentation": {
+              "id": 50799,
+              "nodeType": "StructuredDocumentation",
+              "src": "554:330:53",
+              "text": "@notice A hook which executes on stream creation if the hook contract is set in the CFA\n @dev This should be implemented with an onlyCFA modifier, so that only the CFA can call the function\n @param token the streamed super token\n @param newFlowData the new flow data taken by the hook\n @return bool"
+            },
+            "functionSelector": "e3d8fefe",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "onCreate",
+            "nameLocation": "898:8:53",
+            "parameters": {
+              "id": 50806,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 50802,
+                  "mutability": "mutable",
+                  "name": "token",
+                  "nameLocation": "924:5:53",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 50810,
+                  "src": "907:22:53",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_contract$_ISuperfluidToken_$53981",
+                    "typeString": "contract ISuperfluidToken"
+                  },
+                  "typeName": {
+                    "id": 50801,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 50800,
+                      "name": "ISuperfluidToken",
+                      "nameLocations": [
+                        "907:16:53"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 53981,
+                      "src": "907:16:53"
+                    },
+                    "referencedDeclaration": 53981,
+                    "src": "907:16:53",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_ISuperfluidToken_$53981",
+                      "typeString": "contract ISuperfluidToken"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 50805,
+                  "mutability": "mutable",
+                  "name": "newFlowData",
+                  "nameLocation": "952:11:53",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 50810,
+                  "src": "931:32:53",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_CFAHookParams_$50798_memory_ptr",
+                    "typeString": "struct IConstantFlowAgreementHook.CFAHookParams"
+                  },
+                  "typeName": {
+                    "id": 50804,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 50803,
+                      "name": "CFAHookParams",
+                      "nameLocations": [
+                        "931:13:53"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 50798,
+                      "src": "931:13:53"
+                    },
+                    "referencedDeclaration": 50798,
+                    "src": "931:13:53",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_CFAHookParams_$50798_storage_ptr",
+                      "typeString": "struct IConstantFlowAgreementHook.CFAHookParams"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "906:58:53"
+            },
+            "returnParameters": {
+              "id": 50809,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 50808,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 50810,
+                  "src": "999:4:53",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 50807,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "999:4:53",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "998:6:53"
+            },
+            "scope": 50839,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 50824,
+            "nodeType": "FunctionDefinition",
+            "src": "1389:149:53",
+            "nodes": [],
+            "documentation": {
+              "id": 50811,
+              "nodeType": "StructuredDocumentation",
+              "src": "1011:373:53",
+              "text": "@notice A hook which executes on stream update if the hook contract is set in the CFA\n @dev This should be implemented with an onlyCFA modifier, so that only the CFA can call the function\n @param token the streamed super token\n @param newFlowData the new flow data taken by the hook\n @param oldFlowRate previous flowrate\n @return bool"
+            },
+            "functionSelector": "6ac5bc31",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "onUpdate",
+            "nameLocation": "1398:8:53",
+            "parameters": {
+              "id": 50820,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 50814,
+                  "mutability": "mutable",
+                  "name": "token",
+                  "nameLocation": "1433:5:53",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 50824,
+                  "src": "1416:22:53",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_contract$_ISuperfluidToken_$53981",
+                    "typeString": "contract ISuperfluidToken"
+                  },
+                  "typeName": {
+                    "id": 50813,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 50812,
+                      "name": "ISuperfluidToken",
+                      "nameLocations": [
+                        "1416:16:53"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 53981,
+                      "src": "1416:16:53"
+                    },
+                    "referencedDeclaration": 53981,
+                    "src": "1416:16:53",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_ISuperfluidToken_$53981",
+                      "typeString": "contract ISuperfluidToken"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 50817,
+                  "mutability": "mutable",
+                  "name": "newFlowData",
+                  "nameLocation": "1469:11:53",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 50824,
+                  "src": "1448:32:53",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_CFAHookParams_$50798_memory_ptr",
+                    "typeString": "struct IConstantFlowAgreementHook.CFAHookParams"
+                  },
+                  "typeName": {
+                    "id": 50816,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 50815,
+                      "name": "CFAHookParams",
+                      "nameLocations": [
+                        "1448:13:53"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 50798,
+                      "src": "1448:13:53"
+                    },
+                    "referencedDeclaration": 50798,
+                    "src": "1448:13:53",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_CFAHookParams_$50798_storage_ptr",
+                      "typeString": "struct IConstantFlowAgreementHook.CFAHookParams"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 50819,
+                  "mutability": "mutable",
+                  "name": "oldFlowRate",
+                  "nameLocation": "1496:11:53",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 50824,
+                  "src": "1490:17:53",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_int96",
+                    "typeString": "int96"
+                  },
+                  "typeName": {
+                    "id": 50818,
+                    "name": "int96",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1490:5:53",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_int96",
+                      "typeString": "int96"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1406:107:53"
+            },
+            "returnParameters": {
+              "id": 50823,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 50822,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 50824,
+                  "src": "1532:4:53",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 50821,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1532:4:53",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1531:6:53"
+            },
+            "scope": 50839,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 50838,
+            "nodeType": "FunctionDefinition",
+            "src": "1924:149:53",
+            "nodes": [],
+            "documentation": {
+              "id": 50825,
+              "nodeType": "StructuredDocumentation",
+              "src": "1544:375:53",
+              "text": "@notice A hook which executes on stream deletion if the hook contract is set in the CFA\n @dev This should be implemented with an onlyCFA modifier, so that only the CFA can call the function\n @param token the streamed super token\n @param newFlowData the new flow data taken by the hook\n @param oldFlowRate previous flowrate\n @return bool"
+            },
+            "functionSelector": "2742e95a",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "onDelete",
+            "nameLocation": "1933:8:53",
+            "parameters": {
+              "id": 50834,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 50828,
+                  "mutability": "mutable",
+                  "name": "token",
+                  "nameLocation": "1968:5:53",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 50838,
+                  "src": "1951:22:53",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_contract$_ISuperfluidToken_$53981",
+                    "typeString": "contract ISuperfluidToken"
+                  },
+                  "typeName": {
+                    "id": 50827,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 50826,
+                      "name": "ISuperfluidToken",
+                      "nameLocations": [
+                        "1951:16:53"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 53981,
+                      "src": "1951:16:53"
+                    },
+                    "referencedDeclaration": 53981,
+                    "src": "1951:16:53",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_ISuperfluidToken_$53981",
+                      "typeString": "contract ISuperfluidToken"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 50831,
+                  "mutability": "mutable",
+                  "name": "newFlowData",
+                  "nameLocation": "2004:11:53",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 50838,
+                  "src": "1983:32:53",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_CFAHookParams_$50798_memory_ptr",
+                    "typeString": "struct IConstantFlowAgreementHook.CFAHookParams"
+                  },
+                  "typeName": {
+                    "id": 50830,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 50829,
+                      "name": "CFAHookParams",
+                      "nameLocations": [
+                        "1983:13:53"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 50798,
+                      "src": "1983:13:53"
+                    },
+                    "referencedDeclaration": 50798,
+                    "src": "1983:13:53",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_CFAHookParams_$50798_storage_ptr",
+                      "typeString": "struct IConstantFlowAgreementHook.CFAHookParams"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 50833,
+                  "mutability": "mutable",
+                  "name": "oldFlowRate",
+                  "nameLocation": "2031:11:53",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 50838,
+                  "src": "2025:17:53",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_int96",
+                    "typeString": "int96"
+                  },
+                  "typeName": {
+                    "id": 50832,
+                    "name": "int96",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2025:5:53",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_int96",
+                      "typeString": "int96"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1941:107:53"
+            },
+            "returnParameters": {
+              "id": 50837,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 50836,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 50838,
+                  "src": "2067:4:53",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 50835,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2067:4:53",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2066:6:53"
+            },
+            "scope": 50839,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IConstantFlowAgreementHook",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 50789,
+          "nodeType": "StructuredDocumentation",
+          "src": "132:241:53",
+          "text": "@title IConstantFlowAgreementHook interface\n @author Superfluid\n @notice An interface for the functions needed by a CFA hook contract\n @dev The contract that implements this interface MUST only allow the CFA contract to call it"
+        },
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          50839
+        ],
+        "name": "IConstantFlowAgreementHook",
+        "nameLocation": "383:26:53",
+        "scope": 50840,
+        "usedErrors": []
+      }
+    ],
+    "license": "AGPLv3"
+  },
+  "id": 53
+}

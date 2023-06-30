@@ -11,6 +11,9 @@ const POLYGONSCAN_API: string = process.env.POLYGONSCAN_API as string;
 
 const config: HardhatUserConfig = {
   defaultNetwork: "hardhat",
+  paths: {
+    sources: "./src",
+  },
   networks: {
     mumbai: {
       url: `https://polygon-mumbai.g.alchemy.com/v2/${ALCHEMY_KEY_MUMBAI}`,
@@ -35,7 +38,7 @@ const config: HardhatUserConfig = {
       polygon: POLYGONSCAN_API,
     },
   },
-  solidity: "0.8.14",
+  solidity: "0.8.19",
 };
 
 export default config;
