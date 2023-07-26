@@ -1017,13 +1017,13 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@lens-protocol/client@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@lens-protocol/client/-/client-1.1.0.tgz#8e77cfeb65d88084c3849fa9af5289b7e0c05d3b"
-  integrity sha512-B5iI+opZJqvh2qC0Oe0NGNFhMtl0nLkmmTCUQATVL8U6rVLlPPU9UbZyIXprwpAl92swwLfXLC2udXLlWFANNw==
+"@lens-protocol/client@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@lens-protocol/client/-/client-1.2.0.tgz#0962a3411475b04b5d73cff49bb9afd6001488e5"
+  integrity sha512-1SAumc7P8JHJuoNgHCiRw6jK/OPRicNEzHiKxpe4C7DsQSeTbz/Q81uCo+rnLHAKX/wn8AGPx9IFOabd7+fh9A==
   dependencies:
-    "@lens-protocol/shared-kernel" "0.8.0"
-    "@lens-protocol/storage" "0.7.2"
+    "@lens-protocol/shared-kernel" "0.9.0"
+    "@lens-protocol/storage" "0.7.3"
     dotenv "^16.0.3"
     graphql "^16.6.0"
     graphql-request "^5.1.0"
@@ -1032,22 +1032,22 @@
     tslib "^2.5.0"
     zod "^3.20.6"
 
-"@lens-protocol/shared-kernel@0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@lens-protocol/shared-kernel/-/shared-kernel-0.8.0.tgz#026af63b944dad31b1f4c5ec703d884d3cd184c7"
-  integrity sha512-CA4msIepeTC5KfkXfeSWvR8iN1cPStmBrhhTWrLgUWpwTRQpy/ZY9E7PWzBt6Pi6sbohHWsUyrl6QW83huCppg==
+"@lens-protocol/shared-kernel@0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@lens-protocol/shared-kernel/-/shared-kernel-0.9.0.tgz#55fff1f5d89e2bcca9fa0c1efb7ca8f9f5cbd133"
+  integrity sha512-J/1gvGeOU5WhalwXoh1bcF/Od7boTFy4COhWOh0qmAwOCsURtMVJZ4RuTmvQkzu9V6g9yIt7ylrWoRoZV8ZtgA==
   dependencies:
     decimal.js "^10.4.3"
     lodash "^4.17.21"
     tslib "^2.5.0"
     uuid "^9.0.0"
 
-"@lens-protocol/storage@0.7.2":
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/@lens-protocol/storage/-/storage-0.7.2.tgz#e026ad9a950d77d43b565e09906b55afff46c9d1"
-  integrity sha512-bRXe0WfjbdMEtzL5zBJnqrUeHxXPcyjuiWLACnSpt4HrwCefzdXjq2h96+0yRCmp2FPrRasMUVnLauM+M3Kn0A==
+"@lens-protocol/storage@0.7.3":
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/@lens-protocol/storage/-/storage-0.7.3.tgz#04f95cef0c99436f7338fca00b39bfa41651d098"
+  integrity sha512-mKLStXgv+OSbhrXRlU4lRXuxw7NaZJQIFyhUMd6SLPV7qOTyGBNWfrnD2unDu3tnf0vTyrQzVHk5bC/57N4F1A==
   dependencies:
-    "@lens-protocol/shared-kernel" "0.8.0"
+    "@lens-protocol/shared-kernel" "0.9.0"
     tslib "^2.5.0"
     zod "^3.20.6"
 

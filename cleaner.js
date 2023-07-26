@@ -191,7 +191,7 @@ async function main() {
           const nftInBalance = await contractLensNFT.balanceOf(
             follower.followerAddress
           );
-
+          console.log(clientFromApi.flowSenderAddress, isMirror);
           if (Number(nftInBalance.toString()) === 0 || isMirror === undefined) {
             writeToLog(
               `Cleaning... ${follower.followerAddress} from ${clientFromApi.flowSenderAddress}`
@@ -225,9 +225,6 @@ async function main() {
                     (err) =>
                       `Error executing delete flowower operation in cleaner ${err}`
                   );
-                writeToLog(
-                  `Cleaned ${follower.followerAddress} from ${clientFromApi.flowSenderAddress}`
-                );
               })
               .catch(
                 (err) =>

@@ -136,7 +136,7 @@ async function main() {
     provider: providerSuperfluid,
   });
 
-  const USDCx = await sf.loadSuperToken("ETHx");
+  const USDCx = await sf.loadSuperToken("WMATICx");
 
   // Check NFT Balance
 
@@ -155,8 +155,8 @@ async function main() {
 
   await createFlow(
     "0x43DdF2bF7B0d2bb2D3904298763bcA2D3F2b40E0",
-    "0.1",
-    "0x3DeB09A89bbFCEA78CC15Cc7734f1233Ce3187eE",
+    "0.5",
+    "0xd0361Eab7279E8D605953a2A0e8aDb867B2d196a",
     USDCx
   );
 

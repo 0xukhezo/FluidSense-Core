@@ -111,9 +111,6 @@ async function main() {
   }
 
   async function fetchMirrors(publicationId, ownerProfileId) {
-    if (clientFromApi.publicationId === "0x00000") {
-      return;
-    }
     const queryBody = `
     query Profiles($cursor: Cursor) {
       profiles(
@@ -173,7 +170,7 @@ async function main() {
         clientFromApi.publicationId,
         clientFromApi.clientProfile
       );
-
+      console.log(peopleWhoMirrored);
       const followersFromApi = await getFollowers(
         clientFromApi.flowSenderAddress
       );
@@ -216,7 +213,6 @@ async function main() {
                 flowRate: calculatedFlowRate,
                 overrides: {
                   gasPrice: feeData.gasPrice,
-                  gasLimit: 90000000,
                 },
               });
 
@@ -250,7 +246,6 @@ async function main() {
   }
 
   await getClients();
-
   for (let i = 0; i < clientsArray.length; i++) {
     await checkMirrored(clientsArray[i]);
   }
