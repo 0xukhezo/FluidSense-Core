@@ -170,7 +170,6 @@ async function main() {
         clientFromApi.publicationId,
         clientFromApi.clientProfile
       );
-      console.log(peopleWhoMirrored);
       const followersFromApi = await getFollowers(
         clientFromApi.flowSenderAddress
       );

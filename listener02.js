@@ -114,7 +114,6 @@ async function main() {
     }`;
     try {
       let response = await client.query({ query: Profiles(queryBody) });
-      console.log(response.data.publication.mirrors.length);
       return response.data.publication.mirrors.length;
     } catch (err) {
       writeToLog(err);
