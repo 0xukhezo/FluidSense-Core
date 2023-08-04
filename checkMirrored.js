@@ -178,63 +178,72 @@ async function main() {
         ERC721,
         providerLens
       );
+
       for (let i = 0; i < peopleWhoMirrored.length; i++) {
         const followerToCheck = peopleWhoMirrored[i];
-        try {
-          const nftInBalance = await contractLensNFT.balanceOf(
-            followerToCheck.ownedBy
+        if (
+          clientFromApi.minimumFollowers > followerToCheck.stats.totalFollowers
+        ) {
+          writeToLog(
+            `${followerToCheck.ownedBy} do not have enough followers to have flow in  ${clientFromApi.flowSenderAddress}`
           );
-          const alreadyWithFlow = await followersFromApi.filter(
-            (follower) => follower.followerAddress === followerToCheck.ownedBy
-          );
-          if (
-            // He is following
-            Number(nftInBalance.toString()) !== 0
-          ) {
-            if (alreadyWithFlow.length !== 0) {
-              writeToLog(
-                `${followerToCheck.ownedBy} already with flow in ${clientFromApi.flowSenderAddress}`
-              );
-            } else {
-              writeToLog(
-                `Creating steam to ${followerToCheck.ownedBy} in ${clientFromApi.flowSenderAddress}`
-              );
-              const monthlyAmount = ethers.utils.parseEther(
-                clientFromApi.amountFlowRate.toString()
-              );
-              const calculatedFlowRate = Math.round(monthlyAmount / 2592000);
-
-              const feeData = await providerSuperfluid.getFeeData();
-
-              const createFlowOperation = tokenX.createFlowByOperator({
-                sender: clientFromApi.flowSenderAddress,
-                receiver: followerToCheck.ownedBy,
-                flowRate: calculatedFlowRate,
-                overrides: {
-                  gasPrice: feeData.gasPrice,
-                },
-              });
-
-              try {
-                await createFlowOperation.exec(signer);
-                await postFollower(
-                  followerToCheck.ownedBy,
-                  clientFromApi.flowSenderAddress
-                );
+        } else {
+          try {
+            const nftInBalance = await contractLensNFT.balanceOf(
+              followerToCheck.ownedBy
+            );
+            const alreadyWithFlow = await followersFromApi.filter(
+              (follower) => follower.followerAddress === followerToCheck.ownedBy
+            );
+            if (
+              // He is following
+              Number(nftInBalance.toString()) !== 0
+            ) {
+              if (alreadyWithFlow.length !== 0) {
                 writeToLog(
-                  `Create flow done!, adding ${followerToCheck.ownedBy} to followers in ${clientFromApi.flowSenderAddress}`
+                  `${followerToCheck.ownedBy} already with flow in ${clientFromApi.flowSenderAddress}`
                 );
-              } catch {
+              } else {
                 writeToLog(
-                  `Error creating flow! It is not possible to add ${followerToCheck.ownedBy} to ${clientFromApi.flowSenderAddress}`
+                  `Creating steam to ${followerToCheck.ownedBy} in ${clientFromApi.flowSenderAddress}`
                 );
+                const monthlyAmount = ethers.utils.parseEther(
+                  clientFromApi.amountFlowRate.toString()
+                );
+                const calculatedFlowRate = Math.round(monthlyAmount / 2592000);
+
+                const feeData = await providerSuperfluid.getFeeData();
+
+                const createFlowOperation = tokenX.createFlowByOperator({
+                  sender: clientFromApi.flowSenderAddress,
+                  receiver: followerToCheck.ownedBy,
+                  flowRate: calculatedFlowRate,
+                  overrides: {
+                    gasPrice: feeData.gasPrice,
+                  },
+                });
+
+                try {
+                  await createFlowOperation.exec(signer);
+                  await postFollower(
+                    followerToCheck.ownedBy,
+                    clientFromApi.flowSenderAddress
+                  );
+                  writeToLog(
+                    `Create flow done!, adding ${followerToCheck.ownedBy} to followers in ${clientFromApi.flowSenderAddress}`
+                  );
+                } catch {
+                  writeToLog(
+                    `Error creating flow! It is not possible to add ${followerToCheck.ownedBy} to ${clientFromApi.flowSenderAddress}`
+                  );
+                }
               }
             }
+          } catch (error) {
+            writeToLog(
+              `An error happened executing the checker mirrors: ${error}`
+            );
           }
-        } catch (error) {
-          writeToLog(
-            `An error happened executing the checker mirrors: ${error}`
-          );
         }
       }
     } catch (error) {
