@@ -136,7 +136,7 @@ async function main() {
     provider: providerSuperfluid,
   });
 
-  const USDCx = await sf.loadSuperToken("WMATICx");
+  const USDCx = await sf.loadSuperToken("USDCx");
 
   // Check NFT Balance
 
@@ -154,8 +154,8 @@ async function main() {
 
   await createFlow(
     "0x43DdF2bF7B0d2bb2D3904298763bcA2D3F2b40E0",
-    "0.5",
-    "0xd0361Eab7279E8D605953a2A0e8aDb867B2d196a",
+    "1",
+    "0x065dFbB8B36b6502F097C65E8f7279926D5abcC1",
     USDCx
   );
 
@@ -164,8 +164,8 @@ async function main() {
   // const feeData = await providerSuperfluid.getFeeData();
 
   // const deleteFlowOperation = sf.cfaV1.deleteFlowByOperator({
-  //   sender: "0xc0c95420b00b46CaD44eED898471d9B32ce818b4", // addressCampaing
-  //   receiver: "0x59664b7Ecfd803347c92dbA1a7020cAb9AB0a430", // addressFollower
+  //   sender: "0x065dFbB8B36b6502F097C65E8f7279926D5abcC1", // addressCampaing
+  //   receiver: "0x43DdF2bF7B0d2bb2D3904298763bcA2D3F2b40E0", // addressFollower
   //   superToken: USDCx.address,
   //   overrides: {
   //     gasPrice: feeData.gasPrice,

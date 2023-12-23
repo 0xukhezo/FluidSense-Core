@@ -120,6 +120,15 @@ async function main() {
           id
           handle
           ownedBy
+          stats {
+            totalFollowers
+            totalFollowing
+            totalPosts
+            totalComments
+            totalMirrors
+            totalPublications
+            totalCollects
+          }
         }
         pageInfo {
           prev
